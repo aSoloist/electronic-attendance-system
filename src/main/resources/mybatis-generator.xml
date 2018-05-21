@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <context id="vote" targetRuntime="MyBatis3">
+    <context id="attendance" targetRuntime="MyBatis3">
 
         <!-- 防止生成的代码中有很多注释，加入下面的配置控制 -->
         <commentGenerator>

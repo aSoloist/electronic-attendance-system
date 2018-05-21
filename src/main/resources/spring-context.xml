@@ -59,7 +59,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:/mapper/*Mapper.xml"/>
         <!--它一般对应我们的实体类所在的包，这个时候会自动取对应包中不包括包名的简单类名作为包括包名的别名-->
-        <property name="typeAliasesPackage" value="com.vote.model"/>
+        <property name="typeAliasesPackage" value="system.attendance.electronic.model"/>
     </bean>
 
     <!-- 自动扫描mapper接口,注入sqlsessionfactory ,重点！！！！！-->

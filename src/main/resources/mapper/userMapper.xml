@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    仅用于测试
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值必须是Dao文件所在位置，因此namespace="com.ly.dao.UserDao"-->
+<mapper namespace="system.attendance.electronic.mapper.UserMapper">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUserByName，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="com.ly.model.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+    <!-- 
+        根据username查询得到一个user对象
+     -->
+    <select id="getUserByName" parameterType="String"
+            resultType="system.attendance.electronic.model.User">
+        select * from user where username=#{username} and password=#{password}
+    </select>
+    
+    <insert id="register" parameterType="User">
+        INSERT INTO user (username, email, password, create_time, id) VALUES (#{username},#{email},#{password},#{create_time},#{id})
+    </insert>
+</mapper>
