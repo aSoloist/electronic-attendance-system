@@ -2,7 +2,7 @@ package system.attendance.electronic.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import system.attendance.electronic.model.User;
-import system.attendance.electronic.model.UserExample;
+import system.attendance.electronic.model.example.UserExample;
 
 import java.util.List;
 

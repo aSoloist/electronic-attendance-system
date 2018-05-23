@@ -1,4 +1,4 @@
-package system.attendance.electronic.model;
+package system.attendance.electronic.model.example;
 
 import java.util.ArrayList;
 import java.util.List;

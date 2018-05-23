@@ -69,7 +69,7 @@
   <sql id="Base_Column_List">
     id, user_id, begin_date, end_date, result
   </sql>
-  <select id="selectByExample" parameterType="system.attendance.electronic.model.ApplicationExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="system.attendance.electronic.model.example.ApplicationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -101,7 +101,7 @@
     delete from eas_application
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="system.attendance.electronic.model.ApplicationExample">
+  <delete id="deleteByExample" parameterType="system.attendance.electronic.model.example.ApplicationExample">
     delete from eas_application
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -150,7 +150,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="system.attendance.electronic.model.ApplicationExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="system.attendance.electronic.model.example.ApplicationExample" resultType="java.lang.Long">
     select count(*) from eas_application
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
