@@ -1,16 +1,30 @@
 package system.attendance.electronic.mapper;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 import system.attendance.electronic.model.User;
+import system.attendance.electronic.model.UserExample;
 
-/**
- * 仅用于测试
- * Created by ly on 2017/10/8 18:06
- */
-@Repository
 public interface UserMapper {
-    User getUserByName(@Param("username") String username, @Param("password") String password);
-    
-    void register(User user);
+    long countByExample(UserExample example);
+
+    int deleteByExample(UserExample example);
+
+    int deleteByPrimaryKey(Long id);
+
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    List<User> selectByExample(UserExample example);
+
+    User selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
+
+    int updateByExample(@Param("record") User record, @Param("example") UserExample example);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
 }

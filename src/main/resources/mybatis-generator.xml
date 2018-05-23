@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <context id="attendance" targetRuntime="MyBatis3">
+        <plugin type="com.itfsw.mybatis.generator.plugins.LimitPlugin"/>
 
         <!-- 防止生成的代码中有很多注释，加入下面的配置控制 -->
         <commentGenerator>
@@ -38,6 +39,8 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user_vote" schema="vote" domainObjectName="UserVote"/>
+        <table tableName="eas_application" schema="attendance" domainObjectName="Application"/>
+        <table tableName="eas_user" schema="attendance" domainObjectName="User"/>
+        <table tableName="eas_attendance" schema="attendance" domainObjectName="Attendance"/>
     </context>
 </generatorConfiguration>
