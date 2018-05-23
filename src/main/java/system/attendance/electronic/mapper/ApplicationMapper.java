@@ -1,9 +1,10 @@
 package system.attendance.electronic.mapper;
 
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import system.attendance.electronic.model.Application;
 import system.attendance.electronic.model.ApplicationExample;
+
+import java.util.List;
 
 public interface ApplicationMapper {
     long countByExample(ApplicationExample example);

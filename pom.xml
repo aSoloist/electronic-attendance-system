@@ -90,6 +90,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.itfsw</groupId>
+            <artifactId>mybatis-generator-plugin</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+
         <!-- Spring依赖 -->
         <dependency>
             <groupId>org.springframework</groupId>
