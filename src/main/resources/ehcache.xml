@@ -16,7 +16,13 @@
         <key-type>java.lang.Long</key-type>
         <value-type>java.lang.String</value-type>
         <expiry>
-            <ttl unit="minutes">30</ttl>
+            <!-- 
+                tti: 设定允许对象处于空闲状态的最长时间.当对象自从最近一次被访问后，
+                如果处于空闲状态的时间超过了timeToIdleSeconds属性值，这个对象就会过期
+                ttl: 设定对象允许存在于缓存中的最长时间，当对象自从被存放到缓存中后，
+                如果处于缓存中的时间超过了timeToLiveSeconds属性值，这个对象就会过期
+            -->
+            <tti unit="minutes">30</tti> 
         </expiry>
         <resources>
             <!--3、token被声明在堆上保存多达2,000个条目。-->

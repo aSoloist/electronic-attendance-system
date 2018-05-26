@@ -34,7 +34,7 @@ public class AuthTokenUtil implements TokenManager {
     public Long checkToken(String token) {
         Cache<Long, String> cache = cacheManager.getCache("token", Long.class, String.class);
         for (Cache.Entry<Long, String> next : cache) {
-            if (next.getValue().equals(token)) {
+            if (next != null && next.getValue().equals(token)) {
                 return next.getKey();
             }
         }

@@ -3,10 +3,9 @@ package system.attendance.electronic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import system.attendance.electronic.common.AuthTokenUtil;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Soloist
@@ -24,8 +23,7 @@ public abstract class BaseController {
     protected AuthTokenUtil authTokenUtil;
     
     @ModelAttribute
-    private void getCurrentUser(HttpServletRequest request) {
-        String token = request.getHeader("token");
+    private void getCurrentUser(@RequestHeader String token) {
         currentUserId = authTokenUtil.checkToken(token);
     }
     

@@ -2,12 +2,15 @@ package system.attendance.electronic.controller;
 
 import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import system.attendance.electronic.model.BaseResponseBody;
 import system.attendance.electronic.model.User;
 import system.attendance.electronic.service.UserService;
+
+import java.util.Map;
 
 /**
  * @author Soloist
@@ -24,16 +27,27 @@ public class UserController extends BaseController {
     private UserService userService;
 
     /**
-     * 更新用户信息
+     * 获取用户信息
      *
-     * @param username
-     * @param password
      * @return
      */
-    @RequestMapping("/update")
-    public BaseResponseBody update(@RequestParam String username,
-                                   @RequestParam String password) {
-        User user = new User(currentUserId, username, password);
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public BaseResponseBody get() {
+        BaseResponseBody baseResponseBody = new BaseResponseBody();
+        User user = userService.get(currentUserId);
+        baseResponseBody.setData(user);
+        return baseResponseBody;
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/info", method = RequestMethod.PUT)
+    public BaseResponseBody update(@RequestBody Map<String, String> map) {
+        User user = new User(currentUserId, map.get("username"), map.get("password"));
         BaseResponseBody baseResponseBody = new BaseResponseBody();
         if (!(StringUtils.isEmptyOrWhitespaceOnly(user.getUsername()) &&
                 StringUtils.isEmptyOrWhitespaceOnly(user.getPassword()))) {
