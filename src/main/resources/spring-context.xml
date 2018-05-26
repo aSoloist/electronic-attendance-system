@@ -2,16 +2,28 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.0.xsd
                            http://www.springframework.org/schema/tx
-                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- 配置数据源的文件的位置 -->
     <!--<context:property-placeholder location="classpath:db.properties"/>-->
+
+    <!-- 开启基于注解的spring缓存管理 -->
+    <!--<cache:annotation-driven/>-->
+
+    <bean id="cacheManagerFactoryBean" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
+        <property name="cacheManagerUri" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <!--<bean id="cacheManager" class="system.attendance.electronic.common.JCacheEhcacheManager">
+        <property name="cacheManager" ref="cacheManagerFactoryBean"/>
+    </bean>-->
 
     <!--可以配置多个配置文件-->
     <bean id="propertyConfigurer"
@@ -24,7 +36,7 @@
         <property name="fileEncoding" value="utf-8"/>
     </bean>
 
-    <!-- 配置数据源  可以使用DriverManagerDataSource 或ComboPooledDataSource 后者比较强大：com.mchange.v2.c3p0.ComboPooledDataSource 需要c3p0的包  -->
+    <!-- 配置数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.url}"/>
@@ -72,13 +84,52 @@
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
-    <!--支持注解-->
-    <tx:annotation-driven transaction-manager="transactionManage"/>
     <!-- 配置事务管理器 -->
     <bean id="transactionManage" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!--支持注解-->
+    <tx:annotation-driven proxy-target-class="true"
+                          transaction-manager="transactionManage"/>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManage">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="create*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="merge*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="refund*" propagation="REQUIRED"/>
+            <tx:method name="recharge*" propagation="REQUIRED"/>
+            <tx:method name="remove*" propagation="REQUIRED"/>
+            <tx:method name="put*" propagation="REQUIRED"/>
+            <tx:method name="gen*" propagation="REQUIRED"/>
+            <tx:method name="use*" propagation="REQUIRED"/>
+            <tx:method name="pay*" propagation="REQUIRED"/>
+            <tx:method name="bind*" propagation="REQUIRED"/>
+            <tx:method name="unBind*" propagation="REQUIRED"/>
+            <tx:method name="parse*" propagation="REQUIRED"/>
+            <tx:method name="fault*" propagation="REQUIRED"/>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="count*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="list*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <!-- 只对业务逻辑层实施事务 -->
+        <aop:pointcut id="txPointcut" expression="execution(* *..service..*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+
     <!-- 扫描service -->
     <context:component-scan base-package="system.attendance.electronic.service"/>
+    <context:component-scan base-package="system.attendance.electronic.common"/>
 </beans>
