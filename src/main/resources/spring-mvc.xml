@@ -49,6 +49,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     
+    <!-- 认证拦截 -->
     <mvc:interceptors>
         <bean class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor" />
     </mvc:interceptors>

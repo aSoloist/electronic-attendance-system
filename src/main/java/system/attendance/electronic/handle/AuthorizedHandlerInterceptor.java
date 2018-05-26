@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  * @createtime 2018/5/26 22:39
  * @email ly@soloist.top
- * @description
+ * @description 认证拦截
  */
 public class AuthorizedHandlerInterceptor extends HandlerInterceptorAdapter {
     
