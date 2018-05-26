@@ -1,9 +1,12 @@
 package system.attendance.electronic.model;
 
+import system.attendance.electronic.common.SnowFlakeUtil;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Application {
-    private Long id;
+public class Application implements Serializable {
+    private Long id = SnowFlakeUtil.get();
 
     private Long userId;
 

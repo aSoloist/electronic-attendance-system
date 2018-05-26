@@ -1,13 +1,27 @@
 package system.attendance.electronic.model;
 
-public class User {
+import system.attendance.electronic.common.SnowFlakeUtil;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
     private Long id;
 
-    private Byte root;
+    private Byte root = 0;
 
     private String username;
 
     private String password;
+
+    public User() {
+        id = SnowFlakeUtil.get();
+    }
+
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -39,5 +53,15 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", root=" + root +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
