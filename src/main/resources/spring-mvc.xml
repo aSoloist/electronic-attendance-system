@@ -48,4 +48,8 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+    
+    <mvc:interceptors>
+        <bean class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor" />
+    </mvc:interceptors>
 </beans>
