@@ -15,15 +15,15 @@
     <!--<context:property-placeholder location="classpath:db.properties"/>-->
 
     <!-- 开启基于注解的spring缓存管理 -->
-    <!--<cache:annotation-driven/>-->
+    <cache:annotation-driven/>
 
     <bean id="cacheManagerFactoryBean" class="org.springframework.cache.jcache.JCacheManagerFactoryBean">
         <property name="cacheManagerUri" value="classpath:ehcache.xml"/>
     </bean>
 
-    <!--<bean id="cacheManager" class="system.attendance.electronic.common.JCacheEhcacheManager">
+    <bean id="cacheManager" class="system.attendance.electronic.common.JCacheEhcacheManager">
         <property name="cacheManager" ref="cacheManagerFactoryBean"/>
-    </bean>-->
+    </bean>
 
     <!--可以配置多个配置文件-->
     <bean id="propertyConfigurer"

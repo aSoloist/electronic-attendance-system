@@ -32,16 +32,16 @@
         </resources>
     </cache>
     <!--5、<cache-template>可以让你创建一个抽象的<cache>配置文件，该配置文件可以进一步的被扩展。-->
-    <cache-template name="myDefaults">
+    <cache-template name="defaultTemplate">
         <key-type>java.lang.Long</key-type>
         <value-type>java.lang.String</value-type>
-        <heap unit="entries">200</heap>
+        <heap unit="entries">2000</heap>
     </cache-template>
     <!--6、bar是这样的cache，它使用名为myDefaults的<cache-template>，并将其主键覆盖到更广泛的类型-->
-    <cache alias="bar" uses-template="myDefaults">
-        <key-type>java.lang.Number</key-type>
+    <cache alias="user" uses-template="defaultTemplate">
+        <key-type>system.attendance.electronic.model.User</key-type>
     </cache>
     <!--7、simpleCache是另一个cache，它使用myDefaults配置文件作为其唯一的CacheConfiguration-->
-    <cache alias="simpleCache" uses-template="myDefaults"/>
+    <cache alias="simpleCache" uses-template="defaultTemplate"/>
 
 </config>

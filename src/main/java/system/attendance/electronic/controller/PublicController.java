@@ -45,7 +45,7 @@ public class PublicController {
         if (userByUsername != null) {
             if (userByUsername.getPassword().equals(password)) {
                 AuthToken authToken = authTokenUtil.getToken(userByUsername.getId());
-                baseResponseBody.setData(authToken);
+                baseResponseBody.setData(authToken.getToken());
             } else {
                 baseResponseBody.setCode(400);
                 baseResponseBody.setMsg("wrong password");
@@ -70,7 +70,7 @@ public class PublicController {
                 user.setPassword(password);
                 userService.save(user);
                 AuthToken authToken = authTokenUtil.getToken(user.getId());
-                baseResponseBody.setData(authToken);
+                baseResponseBody.setData(authToken.getToken());
             } else {
                 baseResponseBody.setCode(500);
                 baseResponseBody.setMsg("User already exists");
