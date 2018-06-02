@@ -10,21 +10,23 @@
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <mvc:default-servlet-handler/>
+
     <!-- 扫描带@Controller的类 -->
-    <context:component-scan base-package="system.attendance.electronic.controller" />
+    <context:component-scan base-package="system.attendance.electronic.controller"/>
 
     <!-- 加载注解驱动，自动加载默认处理器映射器和处理器适配器 -->
-    <mvc:annotation-driven />
+    <mvc:annotation-driven/>
 
     <!-- 视图解析器 -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <!-- 可以不配置，默认使用jstl视图 -->
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-        <!-- jsp前缀 -->
-        <property name="prefix" value="/WEB-INF/page/" />
-        <!-- jsp后缀 -->
-        <property name="suffix" value=".jsp" />
-    </bean>
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        &lt;!&ndash; 可以不配置，默认使用jstl视图 &ndash;&gt;
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        &lt;!&ndash; jsp前缀 &ndash;&gt;
+        <property name="prefix" value="/WEB-INF/page/"/>
+        &lt;!&ndash; jsp后缀 &ndash;&gt;
+        <property name="suffix" value=".jsp"/>
+    </bean>-->
 
     <!--图片的上传-->
     <bean id="multipartResolver"
@@ -39,7 +41,8 @@
     <mvc:annotation-driven>
         <mvc:message-converters>
             <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
-            <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+            <bean id="fastJsonHttpMessageConverter"
+                  class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>
                         <value>application/json;charset=UTF-8</value>
@@ -48,9 +51,9 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-    
+
     <!-- 认证拦截 -->
     <mvc:interceptors>
-        <bean class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor" />
+        <bean class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor"/>
     </mvc:interceptors>
 </beans>
