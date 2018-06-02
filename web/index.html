@@ -1,0 +1,57 @@
+<!--
+  Created by WebStorm.
+  User: Soloist
+  Date: 2018/3/23
+  Time: 23:54
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        body {
+            background: url("images/Blur_Backgrounds_2.jpg") no-repeat center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="page-header">
+                <h1 class="text-center">
+                    结果
+                </h1>
+            </div>
+            <div class="text-center">
+                <h1 id="token"></h1>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="application/javascript">
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'POST',
+            async: 'false',
+            url: '/login',
+            dataType: 'JSON',
+            data: {
+                username: "Soloist",
+                password: "123456"
+            },
+            success: function (data) {
+                $('#token').text(data.data);
+            },
+            error: function () {
+                
+            }
+        });
+    })
+
+</script>
+</html>
