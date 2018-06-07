@@ -1,12 +1,9 @@
 package system.attendance.electronic.model;
 
-import system.attendance.electronic.common.SnowFlakeUtil;
-
-import java.io.Serializable;
 import java.util.Date;
 
-public class Attendance implements Serializable {
-    private Long id = SnowFlakeUtil.get();
+public class Attendance {
+    private Long id;
 
     private Long userId;
 
@@ -16,9 +13,13 @@ public class Attendance implements Serializable {
 
     private Byte status;
 
-    private Date nowDate;
+    private Byte month;
 
     private Byte isWorkday;
+
+    private Byte day;
+
+    private Byte year;
 
     public Long getId() {
         return id;
@@ -60,12 +61,12 @@ public class Attendance implements Serializable {
         this.status = status;
     }
 
-    public Date getNowDate() {
-        return nowDate;
+    public Byte getMonth() {
+        return month;
     }
 
-    public void setNowDate(Date nowDate) {
-        this.nowDate = nowDate;
+    public void setMonth(Byte month) {
+        this.month = month;
     }
 
     public Byte getIsWorkday() {
@@ -74,5 +75,21 @@ public class Attendance implements Serializable {
 
     public void setIsWorkday(Byte isWorkday) {
         this.isWorkday = isWorkday;
+    }
+
+    public Byte getDay() {
+        return day;
+    }
+
+    public void setDay(Byte day) {
+        this.day = day;
+    }
+
+    public Byte getYear() {
+        return year;
+    }
+
+    public void setYear(Byte year) {
+        this.year = year;
     }
 }

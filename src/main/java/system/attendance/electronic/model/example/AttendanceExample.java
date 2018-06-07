@@ -208,32 +208,6 @@ public class AttendanceExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
-        }
-
         protected void addCriterionForJDBCTime(String condition, Date value, String property) {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
@@ -560,63 +534,63 @@ public class AttendanceExample {
             return (Criteria) this;
         }
 
-        public Criteria andNowDateIsNull() {
-            addCriterion("now_date is null");
+        public Criteria andMonthIsNull() {
+            addCriterion("month is null");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateIsNotNull() {
-            addCriterion("now_date is not null");
+        public Criteria andMonthIsNotNull() {
+            addCriterion("month is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateEqualTo(Date value) {
-            addCriterionForJDBCDate("now_date =", value, "nowDate");
+        public Criteria andMonthEqualTo(Byte value) {
+            addCriterion("month =", value, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("now_date <>", value, "nowDate");
+        public Criteria andMonthNotEqualTo(Byte value) {
+            addCriterion("month <>", value, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateGreaterThan(Date value) {
-            addCriterionForJDBCDate("now_date >", value, "nowDate");
+        public Criteria andMonthGreaterThan(Byte value) {
+            addCriterion("month >", value, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("now_date >=", value, "nowDate");
+        public Criteria andMonthGreaterThanOrEqualTo(Byte value) {
+            addCriterion("month >=", value, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateLessThan(Date value) {
-            addCriterionForJDBCDate("now_date <", value, "nowDate");
+        public Criteria andMonthLessThan(Byte value) {
+            addCriterion("month <", value, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("now_date <=", value, "nowDate");
+        public Criteria andMonthLessThanOrEqualTo(Byte value) {
+            addCriterion("month <=", value, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateIn(List<Date> values) {
-            addCriterionForJDBCDate("now_date in", values, "nowDate");
+        public Criteria andMonthIn(List<Byte> values) {
+            addCriterion("month in", values, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("now_date not in", values, "nowDate");
+        public Criteria andMonthNotIn(List<Byte> values) {
+            addCriterion("month not in", values, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("now_date between", value1, value2, "nowDate");
+        public Criteria andMonthBetween(Byte value1, Byte value2) {
+            addCriterion("month between", value1, value2, "month");
             return (Criteria) this;
         }
 
-        public Criteria andNowDateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("now_date not between", value1, value2, "nowDate");
+        public Criteria andMonthNotBetween(Byte value1, Byte value2) {
+            addCriterion("month not between", value1, value2, "month");
             return (Criteria) this;
         }
 
@@ -677,6 +651,126 @@ public class AttendanceExample {
 
         public Criteria andIsWorkdayNotBetween(Byte value1, Byte value2) {
             addCriterion("is_workday not between", value1, value2, "isWorkday");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayIsNull() {
+            addCriterion("day is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayIsNotNull() {
+            addCriterion("day is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayEqualTo(Byte value) {
+            addCriterion("day =", value, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayNotEqualTo(Byte value) {
+            addCriterion("day <>", value, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayGreaterThan(Byte value) {
+            addCriterion("day >", value, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayGreaterThanOrEqualTo(Byte value) {
+            addCriterion("day >=", value, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayLessThan(Byte value) {
+            addCriterion("day <", value, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayLessThanOrEqualTo(Byte value) {
+            addCriterion("day <=", value, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayIn(List<Byte> values) {
+            addCriterion("day in", values, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayNotIn(List<Byte> values) {
+            addCriterion("day not in", values, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayBetween(Byte value1, Byte value2) {
+            addCriterion("day between", value1, value2, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayNotBetween(Byte value1, Byte value2) {
+            addCriterion("day not between", value1, value2, "day");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearIsNull() {
+            addCriterion("year is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearIsNotNull() {
+            addCriterion("year is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearEqualTo(Byte value) {
+            addCriterion("year =", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearNotEqualTo(Byte value) {
+            addCriterion("year <>", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearGreaterThan(Byte value) {
+            addCriterion("year >", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearGreaterThanOrEqualTo(Byte value) {
+            addCriterion("year >=", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearLessThan(Byte value) {
+            addCriterion("year <", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearLessThanOrEqualTo(Byte value) {
+            addCriterion("year <=", value, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearIn(List<Byte> values) {
+            addCriterion("year in", values, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearNotIn(List<Byte> values) {
+            addCriterion("year not in", values, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearBetween(Byte value1, Byte value2) {
+            addCriterion("year between", value1, value2, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andYearNotBetween(Byte value1, Byte value2) {
+            addCriterion("year not between", value1, value2, "year");
             return (Criteria) this;
         }
     }
