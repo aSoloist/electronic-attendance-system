@@ -56,8 +56,10 @@ CREATE TABLE `eas_attendance` (
   `begin_time` time NOT NULL DEFAULT '00:00:00',
   `end_time` time NOT NULL DEFAULT '24:00:00',
   `status` tinyint(4) NOT NULL,
-  `now_date` date NOT NULL,
+  `month` tinyint(4) NOT NULL,
   `is_workday` tinyint(4) NOT NULL,
+  `day` tinyint(4) NOT NULL,
+  `year` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `eas_attendance_eas_user_id_fk` (`user_id`),
   CONSTRAINT `eas_attendance_eas_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `eas_user` (`id`)
@@ -95,6 +97,7 @@ CREATE TABLE `eas_user` (
 
 LOCK TABLES `eas_user` WRITE;
 /*!40000 ALTER TABLE `eas_user` DISABLE KEYS */;
+INSERT INTO `eas_user` VALUES (197905437511782400,0,'Soloist','123456');
 /*!40000 ALTER TABLE `eas_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -107,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-23 21:24:25
+-- Dump completed on 2018-06-07 20:00:05
