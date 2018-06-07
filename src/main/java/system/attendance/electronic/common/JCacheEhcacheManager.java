@@ -37,9 +37,8 @@ public class JCacheEhcacheManager extends JCacheCacheManager {
             //获取cache配置
             CacheConfiguration<?, ?> cacheConfiguration = entry.getValue();
             //通过cacheName、keyType、valueType获取cache
-            javax.cache.Cache jcache = getCacheManager().getCache(entry.getKey()
-                    , cacheConfiguration.getKeyType()
-                    , cacheConfiguration.getValueType());
+            javax.cache.Cache jcache = getCacheManager().getCache(entry.getKey(), 
+                    cacheConfiguration.getKeyType(), cacheConfiguration.getValueType());
             caches.add(new JCacheCache(jcache, isAllowNullValues()));
         }
         return caches;

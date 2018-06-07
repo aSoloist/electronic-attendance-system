@@ -22,6 +22,17 @@ public class UserService implements IService<User> {
     private UserMapper userMapper;
 
     /**
+     * 获取所有员工
+     * 
+     * @return
+     */
+    public List<User> getAll() {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andRootEqualTo((byte) 1);
+        return userMapper.selectByExample(userExample);
+    }
+
+    /**
      * 通过id获取用户
      *
      * @param id 用户id
