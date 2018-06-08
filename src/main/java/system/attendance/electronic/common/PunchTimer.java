@@ -39,7 +39,7 @@ public class PunchTimer {
             Attendance attendance = new Attendance();
             attendance.setUserId(user.getId());
             attendance.setStatus((byte) 0);
-            attendance.setYear((byte) year);
+            attendance.setYear(year);
             attendance.setMonth((byte) month);
             attendance.setDay((byte) day);
             attendanceService.save(attendance);
