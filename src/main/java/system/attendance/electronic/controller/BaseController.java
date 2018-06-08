@@ -2,10 +2,13 @@ package system.attendance.electronic.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import system.attendance.electronic.common.AuthTokenUtil;
+import system.attendance.electronic.exception.BaseException;
+import system.attendance.electronic.model.BaseResponseBody;
 
 /**
  * @author Soloist
@@ -25,6 +28,14 @@ public abstract class BaseController {
     @ModelAttribute
     private void getCurrentUser(@RequestHeader String token) {
         currentUserId = authTokenUtil.checkToken(token);
+    }
+
+    @ExceptionHandler({BaseException.class})
+    public BaseResponseBody exceptionHandler(BaseException ex) {
+        BaseResponseBody baseResponseBody = new BaseResponseBody();
+        baseResponseBody.setCode(ex.getCode());
+        baseResponseBody.setMsg(ex.getMessage());
+        return baseResponseBody;
     }
     
 }

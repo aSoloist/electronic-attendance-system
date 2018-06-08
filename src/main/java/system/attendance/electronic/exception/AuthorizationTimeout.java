@@ -1,5 +1,8 @@
 package system.attendance.electronic.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
  * @author Soloist
  * @version 1.0
@@ -7,12 +10,15 @@ package system.attendance.electronic.exception;
  * @email ly@soloist.top
  * @description 授权超时
  */
-public class AuthorizationTimeout extends RuntimeException {
+@ResponseStatus(value = HttpStatus.FORBIDDEN)
+public class AuthorizationTimeout extends BaseException {
     public AuthorizationTimeout() {
-        super("Authorization timeout");
+        super("授权超时");
+        setCode(403);
     }
 
-    public AuthorizationTimeout(String message) {
+    public AuthorizationTimeout(String message, Integer code) {
         super(message);
+        setCode(code);
     }
 }

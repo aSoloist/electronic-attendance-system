@@ -143,5 +143,5 @@
     <!-- 扫描service -->
     <context:component-scan base-package="system.attendance.electronic.service"/>
     <context:component-scan base-package="system.attendance.electronic.common"/>
-    <task:scheduler id="IScheduler"/>
+    
 </beans>
