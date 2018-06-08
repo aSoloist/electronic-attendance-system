@@ -1,9 +1,11 @@
 package system.attendance.electronic.model;
 
+import system.attendance.electronic.common.SnowFlakeUtil;
+
 import java.util.Date;
 
 public class Attendance {
-    private Long id;
+    private Long id = SnowFlakeUtil.get();
 
     private Long userId;
 
@@ -19,7 +21,7 @@ public class Attendance {
 
     private Byte day;
 
-    private Byte year;
+    private Integer year;
 
     public Long getId() {
         return id;
@@ -85,11 +87,11 @@ public class Attendance {
         this.day = day;
     }
 
-    public Byte getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Byte year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 }

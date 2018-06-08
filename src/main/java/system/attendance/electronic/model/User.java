@@ -5,7 +5,7 @@ import system.attendance.electronic.common.SnowFlakeUtil;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private Long id;
+    private Long id = SnowFlakeUtil.get();
 
     private Byte root = 0;
 
@@ -14,7 +14,6 @@ public class User implements Serializable {
     private String password;
 
     public User() {
-        id = SnowFlakeUtil.get();
     }
 
     public User(Long id, String username, String password) {

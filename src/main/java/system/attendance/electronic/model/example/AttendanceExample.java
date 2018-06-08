@@ -724,52 +724,52 @@ public class AttendanceExample {
             return (Criteria) this;
         }
 
-        public Criteria andYearEqualTo(Byte value) {
+        public Criteria andYearEqualTo(Integer value) {
             addCriterion("year =", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearNotEqualTo(Byte value) {
+        public Criteria andYearNotEqualTo(Integer value) {
             addCriterion("year <>", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearGreaterThan(Byte value) {
+        public Criteria andYearGreaterThan(Integer value) {
             addCriterion("year >", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearGreaterThanOrEqualTo(Byte value) {
+        public Criteria andYearGreaterThanOrEqualTo(Integer value) {
             addCriterion("year >=", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearLessThan(Byte value) {
+        public Criteria andYearLessThan(Integer value) {
             addCriterion("year <", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearLessThanOrEqualTo(Byte value) {
+        public Criteria andYearLessThanOrEqualTo(Integer value) {
             addCriterion("year <=", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearIn(List<Byte> values) {
+        public Criteria andYearIn(List<Integer> values) {
             addCriterion("year in", values, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearNotIn(List<Byte> values) {
+        public Criteria andYearNotIn(List<Integer> values) {
             addCriterion("year not in", values, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearBetween(Byte value1, Byte value2) {
+        public Criteria andYearBetween(Integer value1, Integer value2) {
             addCriterion("year between", value1, value2, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearNotBetween(Byte value1, Byte value2) {
+        public Criteria andYearNotBetween(Integer value1, Integer value2) {
             addCriterion("year not between", value1, value2, "year");
             return (Criteria) this;
         }

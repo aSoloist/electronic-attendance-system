@@ -10,7 +10,7 @@
     <result column="month" jdbcType="TINYINT" property="month" />
     <result column="is_workday" jdbcType="TINYINT" property="isWorkday" />
     <result column="day" jdbcType="TINYINT" property="day" />
-    <result column="year" jdbcType="TINYINT" property="year" />
+    <result column="year" jdbcType="INTEGER" property="year" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -118,7 +118,7 @@
       )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{beginTime,jdbcType=TIME}, 
       #{endTime,jdbcType=TIME}, #{status,jdbcType=TINYINT}, #{month,jdbcType=TINYINT}, 
-      #{isWorkday,jdbcType=TINYINT}, #{day,jdbcType=TINYINT}, #{year,jdbcType=TINYINT}
+      #{isWorkday,jdbcType=TINYINT}, #{day,jdbcType=TINYINT}, #{year,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="system.attendance.electronic.model.Attendance">
@@ -178,7 +178,7 @@
         #{day,jdbcType=TINYINT},
       </if>
       <if test="year != null">
-        #{year,jdbcType=TINYINT},
+        #{year,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -216,7 +216,7 @@
         day = #{record.day,jdbcType=TINYINT},
       </if>
       <if test="record.year != null">
-        year = #{record.year,jdbcType=TINYINT},
+        year = #{record.year,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -233,7 +233,7 @@
       month = #{record.month,jdbcType=TINYINT},
       is_workday = #{record.isWorkday,jdbcType=TINYINT},
       day = #{record.day,jdbcType=TINYINT},
-      year = #{record.year,jdbcType=TINYINT}
+      year = #{record.year,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -263,7 +263,7 @@
         day = #{day,jdbcType=TINYINT},
       </if>
       <if test="year != null">
-        year = #{year,jdbcType=TINYINT},
+        year = #{year,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -277,7 +277,7 @@
       month = #{month,jdbcType=TINYINT},
       is_workday = #{isWorkday,jdbcType=TINYINT},
       day = #{day,jdbcType=TINYINT},
-      year = #{year,jdbcType=TINYINT}
+      year = #{year,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
