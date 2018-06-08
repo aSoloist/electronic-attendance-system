@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 public class Unauthorized extends BaseException {
     public Unauthorized() {
-        super("未授权");
-        setCode(401);
+        super("未授权", 401);
     }
 
     public Unauthorized(String message, Integer code) {
-        super(message);
-        setCode(code);
+        super(message, code);
     }
 }
