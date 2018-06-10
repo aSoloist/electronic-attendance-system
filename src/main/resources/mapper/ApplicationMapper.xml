@@ -7,6 +7,7 @@
         <result column="begin_date" jdbcType="DATE" property="beginDate"/>
         <result column="end_date" jdbcType="DATE" property="endDate"/>
         <result column="result" jdbcType="TINYINT" property="result"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -69,7 +70,7 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        id, user_id, begin_date, end_date, result
+        id, user_id, begin_date, end_date, result, type
     </sql>
     <select id="selectByExample" parameterType="system.attendance.electronic.model.example.ApplicationExample"
             resultMap="BaseResultMap">
@@ -112,9 +113,9 @@
     </delete>
     <insert id="insert" parameterType="system.attendance.electronic.model.Application">
         insert into eas_application (id, user_id, begin_date,
-                                     end_date, result)
+                                     end_date, result, type)
         values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{beginDate,jdbcType=DATE},
-                #{endDate,jdbcType=DATE}, #{result,jdbcType=TINYINT})
+                #{endDate,jdbcType=DATE}, #{result,jdbcType=TINYINT}, #{type,jdbcType=TINYINT})
     </insert>
     <insert id="insertSelective" parameterType="system.attendance.electronic.model.Application">
         insert into eas_application
@@ -134,6 +135,9 @@
             <if test="result != null">
                 result,
             </if>
+            <if test="type != null">
+                type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -150,6 +154,9 @@
             </if>
             <if test="result != null">
                 #{result,jdbcType=TINYINT},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
             </if>
         </trim>
     </insert>
@@ -178,6 +185,9 @@
             <if test="record.result != null">
                 result = #{record.result,jdbcType=TINYINT},
             </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=TINYINT},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -189,7 +199,8 @@
         user_id = #{record.userId,jdbcType=BIGINT},
         begin_date = #{record.beginDate,jdbcType=DATE},
         end_date = #{record.endDate,jdbcType=DATE},
-        result = #{record.result,jdbcType=TINYINT}
+        result = #{record.result,jdbcType=TINYINT},
+        type = #{record.type,jdbcType=TINYINT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -209,6 +220,9 @@
             <if test="result != null">
                 result = #{result,jdbcType=TINYINT},
             </if>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -217,7 +231,8 @@
         set user_id    = #{userId,jdbcType=BIGINT},
             begin_date = #{beginDate,jdbcType=DATE},
             end_date   = #{endDate,jdbcType=DATE},
-            result     = #{result,jdbcType=TINYINT}
+            result     = #{result,jdbcType=TINYINT},
+            type       = #{type,jdbcType=TINYINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>
