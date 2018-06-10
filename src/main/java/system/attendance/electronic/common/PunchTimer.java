@@ -3,8 +3,10 @@ package system.attendance.electronic.common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import system.attendance.electronic.model.Application;
 import system.attendance.electronic.model.Attendance;
 import system.attendance.electronic.model.User;
+import system.attendance.electronic.service.ApplicationService;
 import system.attendance.electronic.service.AttendanceService;
 import system.attendance.electronic.service.UserService;
 
@@ -29,20 +31,52 @@ public class PunchTimer {
     @Autowired
     private AttendanceService attendanceService;
     
+    @Autowired
+    private ApplicationService applicationService;
+    
     @Scheduled(cron = "0 0 0 * * ?")
     public void addPunchRecord() {
-        int year = calendar.getWeekYear();
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        System.out.println("执行定时任务");
+        final int year = calendar.getWeekYear();
+        final int month = calendar.get(Calendar.MONTH) + 1;
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        // 生成记录
         List<User> users = userService.getAll();
         users.forEach(user -> {
+            System.out.println(user);
             Attendance attendance = new Attendance();
+            attendance.setId(SnowFlakeUtil.get());
             attendance.setUserId(user.getId());
             attendance.setStatus((byte) 0);
             attendance.setYear(year);
             attendance.setMonth((byte) month);
             attendance.setDay((byte) day);
-            attendanceService.save(attendance);
+            int i = calendar.get(Calendar.DAY_OF_WEEK);
+            if (i == Calendar.SATURDAY || i == Calendar.SUNDAY) {
+                attendance.setIsWorkday((byte) 0);
+            } else {
+                attendance.setIsWorkday((byte) 1);
+            }
+            Attendance save = attendanceService.save(attendance);
+            System.out.println(save);
+        });
+        // 根据申请表更新记录
+        List<Application> todayApplication = applicationService.getApplicationByDate(calendar.getTime());
+        todayApplication.forEach(application -> {
+            System.out.println(application);
+            if (application.getResult().intValue() == 1) {
+                Long userId = application.getUserId();
+                Attendance attendanceByDate = attendanceService.getAttendanceByDate(userId, year, month, day);
+                if (application.getType().intValue() == 1) { // 请假
+                    attendanceByDate.setStatus((byte) 2);
+                } else if (application.getType().intValue() == 2) { // 出差
+                    attendanceByDate.setStatus((byte) 3);
+                } else if (application.getType().intValue() == 3) { // 加班
+                    attendanceByDate.setStatus((byte) 4);
+                }
+                Attendance update = attendanceService.update(attendanceByDate);
+                System.out.println(update);
+            }
         });
     }
     
