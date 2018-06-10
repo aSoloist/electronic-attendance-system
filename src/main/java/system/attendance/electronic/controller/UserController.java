@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import system.attendance.electronic.exception.UserException;
 import system.attendance.electronic.model.BaseResponseBody;
 import system.attendance.electronic.model.User;
 import system.attendance.electronic.service.UserService;
@@ -20,7 +21,7 @@ import java.util.Map;
  * @description
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController extends BaseController {
 
     @Autowired
@@ -31,10 +32,11 @@ public class UserController extends BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public BaseResponseBody get() {
         BaseResponseBody baseResponseBody = new BaseResponseBody();
         User user = userService.get(currentUserId);
+        user.setId(null);
         baseResponseBody.setData(user);
         return baseResponseBody;
     }
@@ -45,7 +47,7 @@ public class UserController extends BaseController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/info", method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT)
     public BaseResponseBody update(@RequestBody Map<String, String> map) {
         User user = new User(currentUserId, map.get("username"), map.get("password"));
         BaseResponseBody baseResponseBody = new BaseResponseBody();
@@ -56,12 +58,10 @@ public class UserController extends BaseController {
                 User update = userService.update(user);
                 baseResponseBody.setData(update);
             } else {
-                baseResponseBody.setCode(500);
-                baseResponseBody.setMsg("User already exists");
+                throw new UserException("用户已存在", 500);
             }
         } else {
-            baseResponseBody.setCode(500);
-            baseResponseBody.setMsg("invalid username or password");
+            throw new UserException("无效的用户名或密码", 500);
         }
         return baseResponseBody;
     }

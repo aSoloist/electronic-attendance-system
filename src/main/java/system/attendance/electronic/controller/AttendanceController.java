@@ -9,7 +9,6 @@ import system.attendance.electronic.model.Attendance;
 import system.attendance.electronic.model.BaseResponseBody;
 import system.attendance.electronic.service.AttendanceService;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ import java.util.List;
  * @description
  */
 @RestController
-@RequestMapping("/attendance")
+@RequestMapping("/attendances")
 public class AttendanceController extends BaseController {
 
     @Autowired
@@ -76,22 +75,6 @@ public class AttendanceController extends BaseController {
         attendance.setIsWorkday(null);
 
         responseBody.setData(attendance);
-        return responseBody;
-    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public BaseResponseBody test() {
-        Calendar calendar = Calendar.getInstance();
-        BaseResponseBody responseBody = new BaseResponseBody();
-
-        Attendance attendance = new Attendance();
-        attendance.setUserId(currentUserId);
-        attendance.setIsWorkday((byte) 1);
-        attendance.setYear(calendar.getWeekYear());
-        attendance.setMonth((byte) (calendar.get(Calendar.MONTH) + 1));
-        attendance.setDay((byte) calendar.get(Calendar.DAY_OF_MONTH));
-
-        responseBody.setData(attendanceService.save(attendance));
         return responseBody;
     }
 

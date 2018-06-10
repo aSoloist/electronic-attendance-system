@@ -2,12 +2,12 @@ package system.attendance.electronic.controller;
 
 import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import system.attendance.electronic.annotation.NoNeedAuthorized;
 import system.attendance.electronic.common.AuthTokenUtil;
+import system.attendance.electronic.common.SnowFlakeUtil;
+import system.attendance.electronic.exception.BaseException;
+import system.attendance.electronic.exception.UserException;
 import system.attendance.electronic.model.AuthToken;
 import system.attendance.electronic.model.BaseResponseBody;
 import system.attendance.electronic.model.User;
@@ -47,16 +47,21 @@ public class PublicController {
                 AuthToken authToken = authTokenUtil.getToken(userByUsername.getId());
                 baseResponseBody.setData(authToken.getToken());
             } else {
-                baseResponseBody.setCode(400);
-                baseResponseBody.setMsg("wrong password");
+                throw new UserException("密码错误", 403);
             }
         } else {
-            baseResponseBody.setCode(400);
-            baseResponseBody.setMsg("User does not exist");
+            throw new UserException("用户不存在", 403);
         }
         return baseResponseBody;
     }
 
+    /**
+     * 用户注册
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public BaseResponseBody register(@RequestParam String username,
                                      @RequestParam String password) {
@@ -66,19 +71,27 @@ public class PublicController {
             User user = userService.getUserByUsername(username);
             if (user == null) {
                 user = new User();
+                user.setId(SnowFlakeUtil.get());
                 user.setUsername(username);
                 user.setPassword(password);
                 userService.save(user);
                 AuthToken authToken = authTokenUtil.getToken(user.getId());
                 baseResponseBody.setData(authToken.getToken());
             } else {
-                baseResponseBody.setCode(500);
-                baseResponseBody.setMsg("User already exists");
+                throw new UserException("用户已存在", 500);
             }
         } else {
-            baseResponseBody.setCode(500);
-            baseResponseBody.setMsg("invalid username or password");
+            throw new UserException("无效的用户名或密码", 500);
         }
         return baseResponseBody;
     }
+
+    @ExceptionHandler({BaseException.class})
+    public BaseResponseBody exceptionHandler(BaseException ex) {
+        BaseResponseBody baseResponseBody = new BaseResponseBody();
+        baseResponseBody.setCode(ex.getCode());
+        baseResponseBody.setMsg(ex.getMessage());
+        return baseResponseBody;
+    }
+    
 }
