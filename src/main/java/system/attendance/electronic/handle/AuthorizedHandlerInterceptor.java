@@ -24,15 +24,15 @@ public class AuthorizedHandlerInterceptor extends HandlerInterceptorAdapter {
     private AuthTokenUtil authTokenUtil;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         } else {
             HandlerMethod method = (HandlerMethod) handler;
             
-            if (method.getBeanType().isAnnotationPresent(NoNeedAuthorized.class)) { // 当前方法有NeedNotLogin注解
+            if (method.getBeanType().isAnnotationPresent(NoNeedAuthorized.class)) { // 当前方法有NoNeedAuthorized注解
                 return true;
-            } else if (method.getMethod().isAnnotationPresent(NoNeedAuthorized.class)) { // 当前类有NeedNotLogin注解
+            } else if (method.getMethod().isAnnotationPresent(NoNeedAuthorized.class)) { // 当前类有NoNeedAuthorized注解
                 return true;
             } else {
                 String token = request.getHeader("token");
