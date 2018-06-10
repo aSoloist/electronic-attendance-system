@@ -52,10 +52,17 @@ public class PunchTimer {
             attendance.setMonth((byte) month);
             attendance.setDay((byte) day);
             int i = calendar.get(Calendar.DAY_OF_WEEK);
-            if (i == Calendar.SATURDAY || i == Calendar.SUNDAY) {
+            Integer isHoliday = DateDetectUtil.checkTodayIsHoliday();
+            if (isHoliday == 2) { // 节假日
                 attendance.setIsWorkday((byte) 0);
-            } else {
+            } else if (isHoliday == 3) { // 调休
                 attendance.setIsWorkday((byte) 1);
+            } else if (isHoliday == 1) { // 非节假日
+                if (i == Calendar.SATURDAY || i == Calendar.SUNDAY) { // 周末
+                    attendance.setIsWorkday((byte) 0);
+                } else {
+                    attendance.setIsWorkday((byte) 1);
+                }
             }
             Attendance save = attendanceService.save(attendance);
             System.out.println(save);

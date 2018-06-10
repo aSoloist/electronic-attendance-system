@@ -86,11 +86,10 @@ public class AttendanceService implements IService<Attendance> {
             throw new SystemErrorException();
         }
 
-        if (attendance.getStatus() != 0) { // 已签到
+        if (attendance.getStatus() != 0 || attendance.getStatus() != 4) { // 已签到
             throw new AttendanceException("已经签到", 403);
         }
 
-        attendance.setStatus((byte) (attendance.getIsWorkday().intValue() == 1 ? 1 : 4));
         attendance.setBeginTime(new Date());
         return update(attendance);
     }
