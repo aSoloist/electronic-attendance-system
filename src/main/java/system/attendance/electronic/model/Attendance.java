@@ -1,16 +1,19 @@
 package system.attendance.electronic.model;
 
-import system.attendance.electronic.common.SnowFlakeUtil;
+import com.alibaba.fastjson.annotation.JSONField;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Attendance {
-    private Long id = SnowFlakeUtil.get();
+public class Attendance implements Serializable {
+    private Long id;
 
     private Long userId;
 
+    @JSONField(format = "HH:mm:ss")
     private Date beginTime;
 
+    @JSONField(format = "HH:mm:ss")
     private Date endTime;
 
     private Byte status;
@@ -93,5 +96,20 @@ public class Attendance {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "Attendance{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", month=" + month +
+                ", isWorkday=" + isWorkday +
+                ", day=" + day +
+                ", year=" + year +
+                '}';
     }
 }
