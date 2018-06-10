@@ -2,10 +2,7 @@ package system.attendance.electronic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import system.attendance.electronic.exception.AlreadyAttendanceException;
-import system.attendance.electronic.exception.NotAllowAttendanceException;
-import system.attendance.electronic.exception.NotYetAttendanceException;
-import system.attendance.electronic.exception.SystemErrorException;
+import system.attendance.electronic.exception.*;
 import system.attendance.electronic.mapper.AttendanceMapper;
 import system.attendance.electronic.model.Attendance;
 import system.attendance.electronic.model.example.AttendanceExample;
@@ -31,6 +28,23 @@ public class AttendanceService implements IService<Attendance> {
     @Override
     public Attendance get(Long id) {
         return null;
+    }
+
+    /**
+     * 获取指定日期的出勤记录
+     *
+     * @param userId
+     * @param year
+     * @param month
+     * @param day
+     * @return
+     */
+    public Attendance getAttendanceByDate(Long userId, Integer year, Integer month, Integer day) {
+        AttendanceExample attendanceExample = new AttendanceExample();
+        attendanceExample.createCriteria().andUserIdEqualTo(userId).andYearEqualTo(year)
+                .andMonthEqualTo(month.byteValue()).andDayEqualTo(day.byteValue());
+        List<Attendance> attendances = attendanceMapper.selectByExample(attendanceExample);
+        return attendances.size() == 1 ? attendances.get(0) : null;
     }
 
     /**
@@ -73,7 +87,7 @@ public class AttendanceService implements IService<Attendance> {
         }
 
         if (attendance.getStatus() != 0) { // 已签到
-            throw new AlreadyAttendanceException();
+            throw new AttendanceException("已经签到", 403);
         }
 
         attendance.setStatus((byte) (attendance.getIsWorkday().intValue() == 1 ? 1 : 4));
@@ -94,11 +108,11 @@ public class AttendanceService implements IService<Attendance> {
         }
 
         if (attendance.getStatus() == 0) { // 尚未签到
-            throw new NotYetAttendanceException();
+            throw new AttendanceException("尚未签到", 403);
         }
 
         if (attendance.getStatus() == 2 || attendance.getStatus() == 3 || attendance.getStatus() == 5) { // 不允许签到
-            throw new NotAllowAttendanceException();
+            throw new AttendanceException("不允许重复签到", 403);
         }
 
         attendance.setEndTime(new Date());

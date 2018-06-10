@@ -28,7 +28,7 @@ public class UserService implements IService<User> {
      */
     public List<User> getAll() {
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andRootEqualTo((byte) 1);
+        userExample.createCriteria().andRootEqualTo((byte) 0);
         return userMapper.selectByExample(userExample);
     }
 
