@@ -1,8 +1,5 @@
 package system.attendance.electronic.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 /**
  * @author Soloist
  * @version 1.0
@@ -10,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @email ly@soloist.top
  * @description 未授权
  */
-@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 public class Unauthorized extends BaseException {
     public Unauthorized() {
         super("未授权", 401);
