@@ -54,6 +54,13 @@
 
     <!-- 认证拦截 -->
     <mvc:interceptors>
-        <bean class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor"/>
+        <!--授权认证-->
+        <bean id="authorizedHandlerInterceptor"
+              class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor"/>
+        <!--权限认证-->
+        <mvc:interceptor>
+            <mvc:mapping path="/admin"/>
+            <bean id="adminHandlerInterceptor" class="system.attendance.electronic.handle.AdminHandlerInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 </beans>
