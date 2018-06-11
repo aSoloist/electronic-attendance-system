@@ -32,19 +32,21 @@ public class AdminHandlerInterceptor extends HandlerInterceptorAdapter {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         } else {
+            System.out.println("admin handler");
             HandlerMethod method = (HandlerMethod) handler;
             // 当前方法有NeedAdmin注解
             if (method.getBeanType().isAnnotationPresent(NeedAdmin.class) || method.getMethod().isAnnotationPresent(NeedAdmin.class)) {
                 String token = request.getHeader("token");
-                Long userId = authTokenUtil.checkToken(token);
+                String userId = authTokenUtil.checkToken(token);
                 User user = userService.get(userId);
+                System.out.println(user);
                 if (user.getRoot() >= 10) {
                     return true;
                 } else {
                     throw new UserException("权限不足", 403);
                 }
             } else {
-                return true;
+                return false;
             }
         }
     }

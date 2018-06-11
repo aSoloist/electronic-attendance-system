@@ -55,11 +55,14 @@
     <!-- 认证拦截 -->
     <mvc:interceptors>
         <!--授权认证-->
-        <bean id="authorizedHandlerInterceptor"
-              class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor"/>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean id="authorizedHandlerInterceptor"
+                  class="system.attendance.electronic.handle.AuthorizedHandlerInterceptor"/>
+        </mvc:interceptor>
         <!--权限认证-->
         <mvc:interceptor>
-            <mvc:mapping path="/admin"/>
+            <mvc:mapping path="/admin/**"/>
             <bean id="adminHandlerInterceptor" class="system.attendance.electronic.handle.AdminHandlerInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

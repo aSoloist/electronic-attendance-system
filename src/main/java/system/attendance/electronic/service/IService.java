@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
  * @description
  */
 @Service
-public interface IService<T> {
+public interface IService<T, K> {
     
-    T get(Long id);
+    T get(K id);
     
     T save(T model);
     
     T update(T model);
     
-    int delete(Long id);
+    int delete(K id);
     
 }

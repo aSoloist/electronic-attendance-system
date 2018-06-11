@@ -25,15 +25,22 @@ public class AttendanceController extends BaseController {
     @Autowired
     private AttendanceService attendanceService;
 
+    /**
+     * 按年月获取出勤
+     *
+     * @param year
+     * @param month
+     * @return
+     */
     @RequestMapping(value = "/{year}/{month}", method = RequestMethod.GET)
     public BaseResponseBody getAttendancesByUser(@PathVariable Integer year, @PathVariable Integer month) {
         List<Attendance> userAttendance = attendanceService.getUserAttendance(currentUserId, year, month);
-        
+
         userAttendance.forEach(attendance -> {
             attendance.setId(null);
-            attendance.setUserId(null); 
+            attendance.setUserId(null);
         });
-        
+
         BaseResponseBody responseBody = new BaseResponseBody();
         responseBody.setData(userAttendance);
         return responseBody;

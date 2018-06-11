@@ -16,14 +16,14 @@ import java.util.List;
  * @description
  */
 @Service
-public class UserService implements IService<User> {
+public class UserService implements IService<User, String> {
 
     @Autowired
     private UserMapper userMapper;
 
     /**
      * 获取所有员工
-     * 
+     *
      * @return
      */
     public List<User> getAll() {
@@ -39,7 +39,7 @@ public class UserService implements IService<User> {
      * @return 用户类
      */
     @Override
-    public User get(Long id) {
+    public User get(String id) {
         return userMapper.selectByPrimaryKey(id);
     }
 
@@ -74,7 +74,7 @@ public class UserService implements IService<User> {
      * @return 删除结果
      */
     @Override
-    public int delete(Long id) {
+    public int delete(String id) {
         return userMapper.deleteByPrimaryKey(id);
     }
 
@@ -93,5 +93,16 @@ public class UserService implements IService<User> {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 检查用户是否存在
+     *
+     * @param username
+     * @return
+     */
+    public Boolean checkUsername(String username) {
+        User userByUsername = getUserByUsername(username);
+        return userByUsername != null;
     }
 }

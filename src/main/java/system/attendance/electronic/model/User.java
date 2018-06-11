@@ -3,9 +3,9 @@ package system.attendance.electronic.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private Long id;
+    private String id;
 
-    private Byte root = 0;
+    private Byte root;
 
     private String username;
 
@@ -14,18 +14,18 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String username, String password) {
+    public User(String id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public Byte getRoot() {
@@ -50,15 +50,5 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", root=" + root +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

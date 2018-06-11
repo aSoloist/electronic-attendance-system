@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import system.attendance.electronic.annotation.NeedAdmin;
+import system.attendance.electronic.exception.ApplicationException;
 import system.attendance.electronic.model.*;
 import system.attendance.electronic.service.ApplicationService;
 import system.attendance.electronic.service.AttendanceService;
@@ -82,9 +83,12 @@ public class AdminController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/applications/{id}/{result}", method = RequestMethod.PUT)
-    public BaseResponseBody updateApplication(@PathVariable Long id,
+    public BaseResponseBody updateApplication(@PathVariable String id,
                                               @PathVariable Integer result) {
         Application application = applicationService.updateResult(id, result);
+        if (application == null) {
+            throw new ApplicationException("申请不存在", 500);
+        }
         User user = userService.get(application.getUserId());
         ApplicationAndUser applicationAndUser = new ApplicationAndUser();
         applicationAndUser.setUser(user);
@@ -104,7 +108,7 @@ public class AdminController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/attendances/{userId}/{year}/{month}", method = RequestMethod.GET)
-    public BaseResponseBody listAttendances(@PathVariable Long userId,
+    public BaseResponseBody listAttendances(@PathVariable String userId,
                                             @PathVariable Integer year,
                                             @PathVariable Integer month) {
         List<Attendance> userAttendance = attendanceService.getUserAttendance(userId, year, month);

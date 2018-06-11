@@ -37,7 +37,7 @@ public class AuthorizedHandlerInterceptor extends HandlerInterceptorAdapter {
             } else {
                 String token = request.getHeader("token");
                 if (token != null) {
-                    Long userId = authTokenUtil.checkToken(token);
+                    String userId = authTokenUtil.checkToken(token);
                     if (userId != null) {
                         return true;
                     } else {

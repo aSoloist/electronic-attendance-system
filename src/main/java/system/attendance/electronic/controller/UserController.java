@@ -2,10 +2,7 @@ package system.attendance.electronic.controller;
 
 import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import system.attendance.electronic.exception.UserException;
 import system.attendance.electronic.model.BaseResponseBody;
 import system.attendance.electronic.model.User;
@@ -37,8 +34,23 @@ public class UserController extends BaseController {
         BaseResponseBody baseResponseBody = new BaseResponseBody();
         User user = userService.get(currentUserId);
         user.setId(null);
+        user.setPassword(null);
         baseResponseBody.setData(user);
         return baseResponseBody;
+    }
+
+    /**
+     * 检查用户名
+     *
+     * @param username
+     * @return
+     */
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public BaseResponseBody checkUsername(@PathVariable String username) {
+        Boolean checkUsername = userService.checkUsername(username);
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(checkUsername);
+        return responseBody;
     }
 
     /**
@@ -56,6 +68,8 @@ public class UserController extends BaseController {
             User userByUsername = userService.getUserByUsername(user.getUsername());
             if (userByUsername == null || userByUsername.getId().equals(currentUserId)) {
                 User update = userService.update(user);
+                user.setId(null);
+                user.setPassword(null);
                 baseResponseBody.setData(update);
             } else {
                 throw new UserException("用户已存在", 500);

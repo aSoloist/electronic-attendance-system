@@ -19,13 +19,13 @@ import java.util.List;
  * @description
  */
 @Service
-public class ApplicationService implements IService<Application> {
+public class ApplicationService implements IService<Application, String> {
 
     @Autowired
     private ApplicationMapper applicationMapper;
 
     @Override
-    public Application get(Long id) {
+    public Application get(String id) {
         return applicationMapper.selectByPrimaryKey(id);
     }
 
@@ -36,8 +36,11 @@ public class ApplicationService implements IService<Application> {
      * @param result
      * @return
      */
-    public Application updateResult(Long id, Integer result) {
+    public Application updateResult(String id, Integer result) {
         Application application = applicationMapper.selectByPrimaryKey(id);
+        if (application == null) {
+            return null;
+        }
         application.setResult(result.byteValue());
         return applicationMapper.updateByPrimaryKeySelective(application) == 1 ? application : null;
     }
@@ -89,7 +92,7 @@ public class ApplicationService implements IService<Application> {
     }
 
     @Override
-    public int delete(Long id) {
+    public int delete(String id) {
         return applicationMapper.deleteByPrimaryKey(id);
     }
 
@@ -114,7 +117,7 @@ public class ApplicationService implements IService<Application> {
      * @param month
      * @return
      */
-    public List<Application> getApplicationMonth(Long userId, Integer year, Integer month) {
+    public List<Application> getApplicationMonth(String userId, Integer year, Integer month) {
         Date[] dates = DateFormatUtil.getMonth(year, month);
         ApplicationExample applicationExample = new ApplicationExample();
         if (userId != null) {

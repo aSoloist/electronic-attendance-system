@@ -20,7 +20,7 @@ import system.attendance.electronic.model.BaseResponseBody;
 @RestController
 public abstract class BaseController {
     
-    protected Long currentUserId;
+    protected String currentUserId;
     
     @Autowired
     protected AuthTokenUtil authTokenUtil;

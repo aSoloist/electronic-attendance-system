@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Attendance implements Serializable {
-    private Long id;
+    private String id;
 
-    private Long userId;
+    private String userId;
 
     @JSONField(format = "HH:mm:ss")
     private Date beginTime;
@@ -26,20 +26,20 @@ public class Attendance implements Serializable {
 
     private Integer year;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public Date getBeginTime() {
@@ -96,20 +96,5 @@ public class Attendance implements Serializable {
 
     public void setYear(Integer year) {
         this.year = year;
-    }
-
-    @Override
-    public String toString() {
-        return "Attendance{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", beginTime=" + beginTime +
-                ", endTime=" + endTime +
-                ", status=" + status +
-                ", month=" + month +
-                ", isWorkday=" + isWorkday +
-                ", day=" + day +
-                ", year=" + year +
-                '}';
     }
 }

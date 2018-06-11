@@ -16,24 +16,24 @@ import java.util.UUID;
  * @description
  */
 @Component
-public class AuthTokenUtil implements TokenManager {
+public class AuthTokenUtil implements TokenManager<String, String> {
 
     @Autowired
     private CacheManager cacheManager;
 
     @Override
-    public AuthToken getToken(Long userId) {
+    public AuthToken getToken(String userId) {
         String token = UUID.randomUUID().toString().replace("-", "");
         AuthToken authToken = new AuthToken(userId, token);
-        Cache<Long, String> cache = cacheManager.getCache("token", Long.class, String.class);
+        Cache<String, String> cache = cacheManager.getCache("token", String.class, String.class);
         cache.put(authToken.getUserId(), authToken.getToken());
         return authToken;
     }
 
     @Override
-    public Long checkToken(String token) {
-        Cache<Long, String> cache = cacheManager.getCache("token", Long.class, String.class);
-        for (Cache.Entry<Long, String> next : cache) {
+    public String checkToken(String token) {
+        Cache<String, String> cache = cacheManager.getCache("token", String.class, String.class);
+        for (Cache.Entry<String, String> next : cache) {
             if (next != null && next.getValue().equals(token)) {
                 return next.getKey();
             }
@@ -43,8 +43,8 @@ public class AuthTokenUtil implements TokenManager {
     }
 
     @Override
-    public void deleteToken(Long userId) {
-        Cache<Long, String> token = cacheManager.getCache("token", Long.class, String.class);
+    public void deleteToken(String userId) {
+        Cache<String, String> token = cacheManager.getCache("token", String.class, String.class);
         token.remove(userId);
     }
 }

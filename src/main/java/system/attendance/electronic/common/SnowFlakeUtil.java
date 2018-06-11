@@ -9,16 +9,17 @@ package system.attendance.electronic.common;
  */
 public class SnowFlakeUtil {
 
-    private final static long DATACENTER_ID = 1;
+    private final static long DATA_CENTER_ID = 1;
     private final static long MACHINE_ID = 1;
-    private final static SnowFlake SNOW_FLAKE = new SnowFlake(DATACENTER_ID, MACHINE_ID);
+    private final static SnowFlake SNOW_FLAKE = new SnowFlake(DATA_CENTER_ID, MACHINE_ID);
 
     /**
      * 获取ID
+     *
      * @return ID
      */
-    public static Long get() {
-        return SNOW_FLAKE.nextId();
+    public static String get() {
+        return SNOW_FLAKE.nextId() + "";
     }
-    
+
 }

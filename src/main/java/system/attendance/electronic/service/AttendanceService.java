@@ -19,14 +19,14 @@ import java.util.List;
  * @description
  */
 @Service
-public class AttendanceService implements IService<Attendance> {
+public class AttendanceService implements IService<Attendance, String> {
 
     @Autowired
     private AttendanceMapper attendanceMapper;
 
 
     @Override
-    public Attendance get(Long id) {
+    public Attendance get(String id) {
         return null;
     }
 
@@ -39,7 +39,7 @@ public class AttendanceService implements IService<Attendance> {
      * @param day
      * @return
      */
-    public Attendance getAttendanceByDate(Long userId, Integer year, Integer month, Integer day) {
+    public Attendance getAttendanceByDate(String userId, Integer year, Integer month, Integer day) {
         AttendanceExample attendanceExample = new AttendanceExample();
         attendanceExample.createCriteria().andUserIdEqualTo(userId).andYearEqualTo(year)
                 .andMonthEqualTo(month.byteValue()).andDayEqualTo(day.byteValue());
@@ -55,14 +55,14 @@ public class AttendanceService implements IService<Attendance> {
      * @param month
      * @return
      */
-    public List<Attendance> getUserAttendance(Long userId, Integer year, Integer month) {
+    public List<Attendance> getUserAttendance(String userId, Integer year, Integer month) {
         AttendanceExample attendanceExample = new AttendanceExample();
         attendanceExample.createCriteria().andUserIdEqualTo(userId).andYearEqualTo(year)
                 .andMonthEqualTo(month.byteValue());
         return attendanceMapper.selectByExample(attendanceExample);
     }
 
-    private Attendance getTodayAttendance(Long userId) {
+    private Attendance getTodayAttendance(String userId) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.getWeekYear();
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -80,17 +80,18 @@ public class AttendanceService implements IService<Attendance> {
      * @param userId
      * @return
      */
-    public Attendance updateAttendance(Long userId) {
+    public Attendance updateAttendance(String userId) {
         Attendance attendance = getTodayAttendance(userId);
         if (attendance == null) {
             throw new SystemErrorException();
         }
 
-        if (attendance.getStatus() != 0 || attendance.getStatus() != 4) { // 已签到
+        if (attendance.getStatus() != 0 && attendance.getStatus() != 4) { // 已签到
             throw new AttendanceException("已经签到", 403);
         }
 
         attendance.setBeginTime(new Date());
+        attendance.setStatus((byte) (attendance.getStatus().intValue() == 0 ? 1 : 4));
         return update(attendance);
     }
 
@@ -100,7 +101,7 @@ public class AttendanceService implements IService<Attendance> {
      * @param userId
      * @return
      */
-    public Attendance delAttendance(Long userId) {
+    public Attendance delAttendance(String userId) {
         Attendance attendance = getTodayAttendance(userId);
         if (attendance == null) {
             throw new SystemErrorException();
@@ -132,7 +133,7 @@ public class AttendanceService implements IService<Attendance> {
     }
 
     @Override
-    public int delete(Long id) {
+    public int delete(String id) {
         return attendanceMapper.deleteByPrimaryKey(id);
     }
 }

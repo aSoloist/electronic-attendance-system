@@ -11,7 +11,7 @@ public interface ApplicationMapper {
 
     int deleteByExample(ApplicationExample example);
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(Application record);
 
@@ -19,7 +19,7 @@ public interface ApplicationMapper {
 
     List<Application> selectByExample(ApplicationExample example);
 
-    Application selectByPrimaryKey(Long id);
+    Application selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") Application record, @Param("example") ApplicationExample example);
 

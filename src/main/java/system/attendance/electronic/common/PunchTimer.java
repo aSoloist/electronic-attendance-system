@@ -72,7 +72,7 @@ public class PunchTimer {
         todayApplication.forEach(application -> {
             System.out.println(application);
             if (application.getResult().intValue() == 1) {
-                Long userId = application.getUserId();
+                String userId = application.getUserId();
                 Attendance attendanceByDate = attendanceService.getAttendanceByDate(userId, year, month, day);
                 if (application.getType().intValue() == 1) { // 请假
                     attendanceByDate.setStatus((byte) 2);

@@ -9,7 +9,7 @@ import system.attendance.electronic.model.AuthToken;
  * @email ly@soloist.top
  * @description
  */
-public interface TokenManager {
+public interface TokenManager<K, V> {
 
     /**
      * 创建一个AuthToken
@@ -17,7 +17,7 @@ public interface TokenManager {
      * @param userId
      * @return
      */
-    public AuthToken getToken(Long userId);
+    public AuthToken getToken(K userId);
 
     /**
      * 检查一个Token是否有效
@@ -25,12 +25,12 @@ public interface TokenManager {
      * @param token
      * @return
      */
-    public Long checkToken(String token);
+    public K checkToken(V token);
 
     /**
      * 清除Token
      * @param userId
      */
-    public void deleteToken(Long userId);
+    public void deleteToken(K userId);
 
 }
