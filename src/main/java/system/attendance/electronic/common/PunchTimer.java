@@ -36,7 +36,6 @@ public class PunchTimer {
     
     @Scheduled(cron = "0 0 0 * * ?")
     public void addPunchRecord() {
-        System.out.println("执行定时任务");
         final int year = calendar.getWeekYear();
         final int month = calendar.get(Calendar.MONTH) + 1;
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
