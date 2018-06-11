@@ -97,4 +97,19 @@ public class Attendance implements Serializable {
     public void setYear(Integer year) {
         this.year = year;
     }
+
+    @Override
+    public String toString() {
+        return "Attendance{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", month=" + month +
+                ", isWorkday=" + isWorkday +
+                ", day=" + day +
+                ", year=" + year +
+                '}';
+    }
 }

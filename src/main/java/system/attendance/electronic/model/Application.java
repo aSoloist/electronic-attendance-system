@@ -67,4 +67,16 @@ public class Application implements Serializable {
     public void setType(Byte type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Application{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", beginDate=" + beginDate +
+                ", endDate=" + endDate +
+                ", result=" + result +
+                ", type=" + type +
+                '}';
+    }
 }
