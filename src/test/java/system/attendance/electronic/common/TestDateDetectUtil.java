@@ -1,10 +1,7 @@
 package system.attendance.electronic.common;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import system.attendance.electronic.BaseTestModel;
 
 /**
  * @author Soloist
@@ -13,9 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @email ly@soloist.top
  * @description
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-context.xml")
-public class TestDateDetectUtil extends AbstractJUnit4SpringContextTests {
+public class TestDateDetectUtil extends BaseTestModel {
     
     @Test
     public void testCheckTodayIsHoliday() {

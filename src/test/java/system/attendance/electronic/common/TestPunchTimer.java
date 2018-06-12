@@ -1,11 +1,8 @@
 package system.attendance.electronic.common;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import system.attendance.electronic.BaseTestModel;
 
 /**
  * @author Soloist
@@ -14,9 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @email ly@soloist.top
  * @description
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring-context.xml")
-public class TestPunchTimer extends AbstractTransactionalJUnit4SpringContextTests {
+public class TestPunchTimer extends BaseTestModel {
     
     @Autowired
     private PunchTimer punchTimer;
