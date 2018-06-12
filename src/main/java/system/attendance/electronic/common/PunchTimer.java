@@ -22,23 +22,22 @@ import java.util.List;
  */
 @Component
 public class PunchTimer {
-    
-    private Calendar calendar = Calendar.getInstance();
-    
+
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private AttendanceService attendanceService;
-    
+
     @Autowired
     private ApplicationService applicationService;
 
     /**
-     * 若在 00:00:00 生成记录，日期将会出现仍为昨天的错误
+     * Calendar类记录的时间为创建该实例时的时间
      */
     @Scheduled(cron = "0 1 0 * * ?")
     public void addPunchRecord() {
+        Calendar calendar = Calendar.getInstance();
         final int year = calendar.getWeekYear();
         final int month = calendar.get(Calendar.MONTH) + 1;
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -76,12 +75,17 @@ public class PunchTimer {
             if (application.getResult().intValue() == 1) {
                 String userId = application.getUserId();
                 Attendance attendanceByDate = attendanceService.getAttendanceByDate(userId, year, month, day);
+                // 结果为null时不会空指针异常，推测forEach方法内部有异常处理
+                if (attendanceByDate == null) {
+                    return;
+                }
                 if (application.getType().intValue() == 1) { // 请假
                     attendanceByDate.setStatus((byte) 2);
                 } else if (application.getType().intValue() == 2) { // 出差
                     attendanceByDate.setStatus((byte) 3);
                 } else if (application.getType().intValue() == 3) { // 加班
                     attendanceByDate.setStatus((byte) 4);
+                    attendanceByDate.setIsWorkday((byte) 1);
                 }
                 Attendance update = attendanceService.update(attendanceByDate);
                 System.out.println(update);

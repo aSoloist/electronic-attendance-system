@@ -16,6 +16,8 @@ import java.net.URL;
  * @description 日期检查工具
  */
 public class DateDetectUtil {
+    // 错误次数
+    private static Integer ERROR_TIME = 0;
 
     private static final String REQUEST_URL = "http://lanfly.vicp.io/api/holiday/info/";
 
@@ -37,8 +39,23 @@ public class DateDetectUtil {
                 str.append(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // 重试10次
+            if (ERROR_TIME < 10) {
+                System.out.println(ERROR_TIME);
+                // 10秒后重新请求
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+                ERROR_TIME++;
+                return checkTodayIsHoliday();
+            } else {
+                return 0;
+            }
         } finally {
+            // 重置错误次数
+            ERROR_TIME = 0;
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
@@ -49,14 +66,14 @@ public class DateDetectUtil {
         if (json.get("code").equals(1)) { // 服务错误
             return 0;
         }
-        
+
         if (json.get("code").equals(0)) { // 服务正常
             JSONObject holiday = json.getJSONObject("holiday");
-            
+
             if (holiday == null) { // 非节假日
                 return 1;
             }
-            
+
             if (holiday.get("holiday").equals(false)) { //是否调休
                 return 3;
             } else {
