@@ -13,6 +13,7 @@ import system.attendance.electronic.service.AttendanceService;
 import system.attendance.electronic.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -114,6 +115,53 @@ public class AdminController extends BaseController {
         List<Attendance> userAttendance = attendanceService.getUserAttendance(userId, year, month);
         BaseResponseBody responseBody = new BaseResponseBody();
         responseBody.setData(userAttendance);
+        return responseBody;
+    }
+
+    /**
+     * 统计指定用户出勤记录
+     *
+     * @param userId
+     * @param year
+     * @param month
+     * @return
+     */
+    @RequestMapping(value = "/count/{userId}/{year}/{month}", method = RequestMethod.GET)
+    public BaseResponseBody attendanceCount(@PathVariable String userId,
+                                            @PathVariable Integer year,
+                                            @PathVariable Integer month) {
+        Calendar calendar = Calendar.getInstance();
+        int nowYear = calendar.getWeekYear();
+        int nowMonth = calendar.get(Calendar.MONTH);
+        int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        List<Attendance> userAttendance = attendanceService.getUserAttendance(userId, year, month);
+        AttendanceCount attendanceCount = new AttendanceCount();
+        userAttendance.forEach(attendance -> {
+            if (attendance.getYear() != nowYear || attendance.getMonth() != nowMonth || attendance.getDay() != nowDay) {
+                long time = attendance.getEndTime().getTime() - attendance.getBeginTime().getTime();
+                if (time < 8 * 60 * 60 * 1000) {
+                    attendanceCount.increaseLeaveEarlyDays();
+                }
+                switch (attendance.getStatus()) {
+                    case 0:
+                        attendanceCount.increaseAbsenceDays();
+                        break;
+                    case 4:
+                    case 5:
+                        attendanceCount.increaseAttendanceDays();
+                        break;
+                    case 2:
+                        attendanceCount.increaseLeaveDays();
+                        break;
+                    case 3:
+                        attendanceCount.increaseTravelingDays();
+                        break;
+                }
+            }
+        });
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(attendanceCount);
         return responseBody;
     }
 

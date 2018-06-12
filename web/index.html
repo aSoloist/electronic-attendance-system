@@ -18,40 +18,20 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="page-header">
-                <h1 class="text-center">
-                    结果
-                </h1>
-            </div>
-            <div class="text-center">
-                <h1 id="token"></h1>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1 class="text-center">
+                结果
+            </h1>
+        </div>
+        <div class="text-center">
+            <h1 id="token"></h1>
         </div>
     </div>
+</div>
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script type="application/javascript">
-
-    $(document).ready(function () {
-        $.ajax({
-            type: 'POST',
-            async: 'false',
-            url: '/login',
-            dataType: 'JSON',
-            data: {
-                username: "Soloist",
-                password: "123456"
-            },
-            success: function (data) {
-                $('#token').text(data.data);
-            },
-            error: function () {
-                
-            }
-        });
-    })
-
 </script>
 </html>

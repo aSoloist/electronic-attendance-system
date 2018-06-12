@@ -44,7 +44,7 @@ public class AdminHandlerInterceptor extends HandlerInterceptorAdapter {
                     throw new UserException("权限不足", 403);
                 }
             } else {
-                return false;
+                return true;
             }
         }
     }

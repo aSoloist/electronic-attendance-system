@@ -40,20 +40,6 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 检查用户名
-     *
-     * @param username
-     * @return
-     */
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
-    public BaseResponseBody checkUsername(@PathVariable String username) {
-        Boolean checkUsername = userService.checkUsername(username);
-        BaseResponseBody responseBody = new BaseResponseBody();
-        responseBody.setData(checkUsername);
-        return responseBody;
-    }
-
-    /**
      * 更新用户信息
      *
      * @param map

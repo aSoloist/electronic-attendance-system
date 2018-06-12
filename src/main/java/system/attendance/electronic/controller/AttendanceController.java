@@ -87,6 +87,13 @@ public class AttendanceController extends BaseController {
         return responseBody;
     }
 
+    /**
+     * 统计出勤记录
+     *
+     * @param year
+     * @param month
+     * @return
+     */
     @RequestMapping(value = "/count/{year}/{month}", method = RequestMethod.GET)
     public BaseResponseBody attendanceCount(@PathVariable Integer year,
                                             @PathVariable Integer month) {
@@ -107,7 +114,6 @@ public class AttendanceController extends BaseController {
                     case 0:
                         attendanceCount.increaseAbsenceDays();
                         break;
-                    case 1:
                     case 4:
                     case 5:
                         attendanceCount.increaseAttendanceDays();

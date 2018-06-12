@@ -1,5 +1,6 @@
 package system.attendance.electronic.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,10 @@ public class PublicController {
         if (userByUsername != null) {
             if (userByUsername.getPassword().equals(password)) {
                 AuthToken authToken = authTokenUtil.getToken(userByUsername.getId());
-                baseResponseBody.setData(authToken.getToken());
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("token", authToken.getToken());
+                jsonObject.put("root", userByUsername.getRoot());
+                baseResponseBody.setData(jsonObject);
             } else {
                 throw new UserException("密码错误", 403);
             }
@@ -74,9 +78,13 @@ public class PublicController {
                 user.setId(SnowFlakeUtil.get());
                 user.setUsername(username);
                 user.setPassword(password);
+                user.setRoot((byte) 0);
                 userService.save(user);
                 AuthToken authToken = authTokenUtil.getToken(user.getId());
-                baseResponseBody.setData(authToken.getToken());
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("token", authToken.getToken());
+                jsonObject.put("root", user.getRoot());
+                baseResponseBody.setData(jsonObject);
             } else {
                 throw new UserException("用户已存在", 500);
             }
@@ -84,6 +92,20 @@ public class PublicController {
             throw new UserException("无效的用户名或密码", 500);
         }
         return baseResponseBody;
+    }
+
+    /**
+     * 检查用户名
+     *
+     * @param username
+     * @return
+     */
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
+    public BaseResponseBody checkUsername(@RequestParam String username) {
+        Boolean checkUsername = userService.checkUsername(username);
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(checkUsername);
+        return responseBody;
     }
 
     @ExceptionHandler({BaseException.class})

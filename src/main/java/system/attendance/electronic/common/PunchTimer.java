@@ -33,8 +33,11 @@ public class PunchTimer {
     
     @Autowired
     private ApplicationService applicationService;
-    
-    @Scheduled(cron = "0 0 0 * * ?")
+
+    /**
+     * 若在 00:00:00 生成记录，日期将会出现仍为昨天的错误
+     */
+    @Scheduled(cron = "0 1 0 * * ?")
     public void addPunchRecord() {
         final int year = calendar.getWeekYear();
         final int month = calendar.get(Calendar.MONTH) + 1;
