@@ -31,6 +31,20 @@ public class AttendanceService implements IService<Attendance, String> {
     }
 
     /**
+     * 检查出勤
+     * @param userId
+     * @return 
+     */
+    public Attendance checkAttendance(String userId) {
+        Attendance todayAttendance = getTodayAttendance(userId);
+        if (todayAttendance != null) {
+            return todayAttendance;
+        } else {
+            throw new AttendanceException("检查出勤失败", 500);
+        }
+    }
+
+    /**
      * 获取指定日期的出勤记录
      *
      * @param userId
@@ -79,6 +93,7 @@ public class AttendanceService implements IService<Attendance, String> {
      *
      * @param userId
      * @return
+     * @deprecated 加班状态尚有问题
      */
     public Attendance updateAttendance(String userId) {
         Attendance attendance = getTodayAttendance(userId);
@@ -111,8 +126,8 @@ public class AttendanceService implements IService<Attendance, String> {
             throw new AttendanceException("尚未签到", 403);
         }
 
-        if (attendance.getStatus() == 2 || attendance.getStatus() == 3 || attendance.getStatus() == 5) { // 不允许签到
-            throw new AttendanceException("不允许重复签到", 403);
+        if (attendance.getStatus() == 2 || attendance.getStatus() == 3 || attendance.getStatus() == 5) { // 不允许签退
+            throw new AttendanceException("不允许重复签退", 403);
         }
 
         attendance.setEndTime(new Date());
