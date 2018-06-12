@@ -81,8 +81,10 @@ public class PunchTimer {
                 }
                 if (application.getType().intValue() == 1) { // 请假
                     attendanceByDate.setStatus((byte) 2);
+                    attendanceByDate.setIsWorkday((byte) 0);
                 } else if (application.getType().intValue() == 2) { // 出差
                     attendanceByDate.setStatus((byte) 3);
+                    attendanceByDate.setIsWorkday((byte) 0);
                 } else if (application.getType().intValue() == 3) { // 加班
                     attendanceByDate.setStatus((byte) 4);
                     attendanceByDate.setIsWorkday((byte) 1);

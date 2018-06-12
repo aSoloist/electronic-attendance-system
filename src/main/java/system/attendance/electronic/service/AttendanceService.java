@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import system.attendance.electronic.exception.*;
 import system.attendance.electronic.mapper.AttendanceMapper;
 import system.attendance.electronic.model.Attendance;
+import system.attendance.electronic.model.AttendanceCount;
 import system.attendance.electronic.model.example.AttendanceExample;
 
 import java.util.Calendar;
@@ -31,14 +32,70 @@ public class AttendanceService implements IService<Attendance, String> {
     }
 
     /**
-     * 检查出勤
+     * 出勤统计
+     *
      * @param userId
-     * @return 
+     * @param year
+     * @param month
+     * @return
      */
-    public Attendance checkAttendance(String userId) {
-        Attendance todayAttendance = getTodayAttendance(userId);
-        if (todayAttendance != null) {
-            return todayAttendance;
+    public AttendanceCount attendanceCount(String userId, Integer year, Integer month) {
+        Calendar calendar = Calendar.getInstance();
+        int nowYear = calendar.getWeekYear();
+        int nowMonth = calendar.get(Calendar.MONTH);
+        int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        List<Attendance> userAttendance = getUserAttendance(userId, year, month);
+        AttendanceCount attendanceCount = new AttendanceCount();
+        userAttendance.forEach(attendance -> {
+            if (attendance.getYear() != nowYear || attendance.getMonth() != nowMonth || attendance.getDay() != nowDay) {
+                long time = attendance.getEndTime().getTime() - attendance.getBeginTime().getTime();
+                if (time < 8 * 60 * 60 * 1000) {
+                    attendanceCount.increaseLeaveEarlyDays();
+                }
+                switch (attendance.getStatus()) {
+                    case 0:
+                        attendanceCount.increaseAbsenceDays();
+                        break;
+                    case 4:
+                    case 5:
+                        attendanceCount.increaseAttendanceDays();
+                        break;
+                    case 2:
+                        attendanceCount.increaseLeaveDays();
+                        break;
+                    case 3:
+                        attendanceCount.increaseTravelingDays();
+                        break;
+                }
+            }
+        });
+
+        return attendanceCount;
+    }
+
+    /**
+     * 检查出勤 0 允许签到 1 允许签退 2 都不允许
+     *
+     * @param userId
+     * @return
+     */
+    public Integer checkAttendance(String userId) {
+        Attendance attendance = getTodayAttendance(userId);
+        Integer check = 0;
+        if (attendance != null) {
+            if (attendance.getIsWorkday().intValue() == 1) { // 工作日
+                if (attendance.getStatus().intValue() == 0 || attendance.getStatus().intValue() == 4) { // 未出勤
+                    check = 0;
+                } else if (attendance.getStatus().intValue() == 1) { // 已签到
+                    check = 1;
+                } else if (attendance.getStatus().intValue() == 5) { // 已签退
+                    check = 2;
+                }
+            } else { // 非工作日
+                check = 2;
+            }
+            return check;
         } else {
             throw new AttendanceException("检查出勤失败", 500);
         }
@@ -93,7 +150,6 @@ public class AttendanceService implements IService<Attendance, String> {
      *
      * @param userId
      * @return
-     * @deprecated 加班状态尚有问题
      */
     public Attendance updateAttendance(String userId) {
         Attendance attendance = getTodayAttendance(userId);
@@ -101,12 +157,20 @@ public class AttendanceService implements IService<Attendance, String> {
             throw new SystemErrorException();
         }
 
-        if (attendance.getStatus() != 0 && attendance.getStatus() != 4) { // 已签到
+        if (attendance.getIsWorkday().intValue() == 0) {
+            throw new AttendanceException("非工作日不允许签到", 403);
+        }
+
+        if (attendance.getStatus().intValue() == 1) { // 已签到
             throw new AttendanceException("已经签到", 403);
+        } else if (attendance.getStatus().intValue() == 2 || attendance.getStatus().intValue() == 3) { // 不允许签到
+            throw new AttendanceException("不允许签到", 403);
+        } else if (attendance.getStatus().intValue() == 5) { // 已签退
+            throw new AttendanceException("已经签退", 403);
         }
 
         attendance.setBeginTime(new Date());
-        attendance.setStatus((byte) (attendance.getStatus().intValue() == 0 ? 1 : 4));
+        attendance.setStatus((byte) 1);
         return update(attendance);
     }
 
@@ -122,11 +186,15 @@ public class AttendanceService implements IService<Attendance, String> {
             throw new SystemErrorException();
         }
 
-        if (attendance.getStatus() == 0) { // 尚未签到
-            throw new AttendanceException("尚未签到", 403);
+        if (attendance.getIsWorkday().intValue() == 0) {
+            throw new AttendanceException("非工作日不允许签退", 403);
         }
 
-        if (attendance.getStatus() == 2 || attendance.getStatus() == 3 || attendance.getStatus() == 5) { // 不允许签退
+        if (attendance.getStatus().intValue() == 0 || attendance.getStatus().intValue() == 4) { // 尚未签到
+            throw new AttendanceException("尚未签到", 403);
+        } else if (attendance.getStatus().intValue() == 2 || attendance.getStatus().intValue() == 3) { // 不允许签退
+            throw new AttendanceException("不允许签退", 403);
+        } else if (attendance.getStatus().intValue() == 5) {
             throw new AttendanceException("不允许重复签退", 403);
         }
 

@@ -10,7 +10,6 @@ import system.attendance.electronic.model.AttendanceCount;
 import system.attendance.electronic.model.BaseResponseBody;
 import system.attendance.electronic.service.AttendanceService;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -29,22 +28,14 @@ public class AttendanceController extends BaseController {
 
     /**
      * 0 允许签到 1 允许签退 2 都不允许
+     *
      * @return
      */
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
     public BaseResponseBody checkAttendance() {
         BaseResponseBody responseBody = new BaseResponseBody();
-        Attendance attendance = attendanceService.checkAttendance(currentUserId);
-        if (attendance.getIsWorkday().intValue() == 1) { // 工作日
-            if (attendance.getStatus().intValue() == 0) { // 未出勤
-                responseBody.setData(0);
-            } else if (attendance.getStatus().intValue() == 1) { // 已签到
-                responseBody.setData(1);
-            } else if (attendance.getStatus().intValue() == 5) { // 已签退
-                responseBody.setData(2);
-            }
-        } else { // 非工作日
-            responseBody.setData(2);
-        }
+        Integer check = attendanceService.checkAttendance(currentUserId);
+        responseBody.setData(check);
         return responseBody;
     }
 
@@ -118,36 +109,7 @@ public class AttendanceController extends BaseController {
     @RequestMapping(value = "/count/{year}/{month}", method = RequestMethod.GET)
     public BaseResponseBody attendanceCount(@PathVariable Integer year,
                                             @PathVariable Integer month) {
-        Calendar calendar = Calendar.getInstance();
-        int nowYear = calendar.getWeekYear();
-        int nowMonth = calendar.get(Calendar.MONTH);
-        int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        List<Attendance> userAttendance = attendanceService.getUserAttendance(currentUserId, year, month);
-        AttendanceCount attendanceCount = new AttendanceCount();
-        userAttendance.forEach(attendance -> {
-            if (attendance.getYear() != nowYear || attendance.getMonth() != nowMonth || attendance.getDay() != nowDay) {
-                long time = attendance.getEndTime().getTime() - attendance.getBeginTime().getTime();
-                if (time < 8 * 60 * 60 * 1000) {
-                    attendanceCount.increaseLeaveEarlyDays();
-                }
-                switch (attendance.getStatus()) {
-                    case 0:
-                        attendanceCount.increaseAbsenceDays();
-                        break;
-                    case 4:
-                    case 5:
-                        attendanceCount.increaseAttendanceDays();
-                        break;
-                    case 2:
-                        attendanceCount.increaseLeaveDays();
-                        break;
-                    case 3:
-                        attendanceCount.increaseTravelingDays();
-                        break;
-                }
-            }
-        });
+        AttendanceCount attendanceCount = attendanceService.attendanceCount(currentUserId, year, month);
         BaseResponseBody responseBody = new BaseResponseBody();
         responseBody.setData(attendanceCount);
         return responseBody;
