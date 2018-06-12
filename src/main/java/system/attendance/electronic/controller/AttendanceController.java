@@ -28,6 +28,27 @@ public class AttendanceController extends BaseController {
     private AttendanceService attendanceService;
 
     /**
+     * 0 允许签到 1 允许签退 2 都不允许
+     * @return
+     */
+    public BaseResponseBody checkAttendance() {
+        BaseResponseBody responseBody = new BaseResponseBody();
+        Attendance attendance = attendanceService.checkAttendance(currentUserId);
+        if (attendance.getIsWorkday().intValue() == 1) { // 工作日
+            if (attendance.getStatus().intValue() == 0) { // 未出勤
+                responseBody.setData(0);
+            } else if (attendance.getStatus().intValue() == 1) { // 已签到
+                responseBody.setData(1);
+            } else if (attendance.getStatus().intValue() == 5) { // 已签退
+                responseBody.setData(2);
+            }
+        } else { // 非工作日
+            responseBody.setData(2);
+        }
+        return responseBody;
+    }
+
+    /**
      * 按年月获取出勤
      *
      * @param year
