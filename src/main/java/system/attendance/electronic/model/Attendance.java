@@ -16,10 +16,16 @@ public class Attendance implements Serializable {
     @JSONField(format = "HH:mm:ss")
     private Date endTime;
 
+    /**
+     * 0 未出勤 1 出勤 2 请假 3 出差 4 加班 5 签退
+     */
     private Byte status;
 
     private Byte month;
 
+    /**
+     * 0 否 1 是
+     */
     private Byte isWorkday;
 
     private Byte day;

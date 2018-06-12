@@ -16,8 +16,14 @@ public class Application implements Serializable {
     @JSONField(format = "yyyy-MM-dd")
     private Date endDate;
 
+    /**
+     * 0 通过 1 允许
+     */
     private Byte result;
 
+    /**
+     * 1 请假 2 出差 3 加班
+     */
     private Byte type;
 
     public String getId() {
