@@ -16,6 +16,7 @@ import java.util.List;
  * @email ly@soloist.top
  * @description
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/applications")
 public class ApplicationController extends BaseController {
@@ -40,6 +41,18 @@ public class ApplicationController extends BaseController {
         save.setUserId(null);
         save.setId(null);
         responseBody.setData(save);
+        return responseBody;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public BaseResponseBody getApplication() {
+        BaseResponseBody responseBody = new BaseResponseBody();
+        List<Application> applicationMonth = applicationService.getApplicationMonth(currentUserId, null, null);
+        applicationMonth.forEach(application -> {
+            application.setId(null);
+            application.setUserId(null);
+        });
+        responseBody.setData(applicationMonth);
         return responseBody;
     }
 

@@ -128,6 +128,11 @@ public class AttendanceService implements IService<Attendance, String> {
      */
     public List<Attendance> getUserAttendance(String userId, Integer year, Integer month) {
         AttendanceExample attendanceExample = new AttendanceExample();
+        if (year == null && month == null) {
+            Calendar calendar = Calendar.getInstance();
+            year = calendar.getWeekYear();
+            month = calendar.get(Calendar.MONTH) + 1;
+        }
         attendanceExample.createCriteria().andUserIdEqualTo(userId).andYearEqualTo(year)
                 .andMonthEqualTo(month.byteValue());
         return attendanceMapper.selectByExample(attendanceExample);

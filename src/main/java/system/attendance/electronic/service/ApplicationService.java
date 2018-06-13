@@ -8,6 +8,7 @@ import system.attendance.electronic.mapper.ApplicationMapper;
 import system.attendance.electronic.model.Application;
 import system.attendance.electronic.model.example.ApplicationExample;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -118,6 +119,11 @@ public class ApplicationService implements IService<Application, String> {
      * @return
      */
     public List<Application> getApplicationMonth(String userId, Integer year, Integer month) {
+        if (year == null && month == null) {
+            Calendar calendar = Calendar.getInstance();
+            year = calendar.getWeekYear();
+            month = calendar.get(Calendar.MONTH) + 1;
+        }
         Date[] dates = DateFormatUtil.getMonth(year, month);
         ApplicationExample applicationExample = new ApplicationExample();
         if (userId != null) {

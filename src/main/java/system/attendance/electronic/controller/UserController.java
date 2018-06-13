@@ -17,6 +17,7 @@ import java.util.Map;
  * @email ly@soloist.top
  * @description
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/users")
 public class UserController extends BaseController {
@@ -64,6 +65,12 @@ public class UserController extends BaseController {
             throw new UserException("无效的用户名或密码", 500);
         }
         return baseResponseBody;
+    }
+    
+    @RequestMapping(method = RequestMethod.DELETE)
+    public BaseResponseBody logout() {
+        authTokenUtil.deleteToken(currentUserId);
+        return new BaseResponseBody();
     }
 
 }

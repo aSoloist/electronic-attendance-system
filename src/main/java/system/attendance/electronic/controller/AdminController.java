@@ -1,10 +1,7 @@
 package system.attendance.electronic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import system.attendance.electronic.annotation.NeedAdmin;
 import system.attendance.electronic.exception.ApplicationException;
 import system.attendance.electronic.model.*;
@@ -22,6 +19,7 @@ import java.util.List;
  * @email ly@soloist.top
  * @description
  */
+@CrossOrigin
 @NeedAdmin
 @RequestMapping("/admin")
 @RestController
@@ -98,6 +96,14 @@ public class AdminController extends BaseController {
         responseBody.setData(applicationAndUser);
         return responseBody;
     }
+    
+    @RequestMapping(value = "/attendances/{userId}", method = RequestMethod.GET)
+    public BaseResponseBody listAttendance(@PathVariable String userId) {
+        List<Attendance> userAttendance = attendanceService.getUserAttendance(userId, null, null);
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(userAttendance);
+        return responseBody;
+    }
 
     /**
      * 获取指定用户出勤
@@ -114,6 +120,14 @@ public class AdminController extends BaseController {
         List<Attendance> userAttendance = attendanceService.getUserAttendance(userId, year, month);
         BaseResponseBody responseBody = new BaseResponseBody();
         responseBody.setData(userAttendance);
+        return responseBody;
+    }
+
+    @RequestMapping(value = "/count/{userId}", method = RequestMethod.GET)
+    public BaseResponseBody attendanceCount(@PathVariable String userId) {
+        AttendanceCount attendanceCount = attendanceService.attendanceCount(userId, null, null);
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(attendanceCount);
         return responseBody;
     }
 

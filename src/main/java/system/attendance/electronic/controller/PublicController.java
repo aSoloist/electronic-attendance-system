@@ -21,6 +21,7 @@ import system.attendance.electronic.service.UserService;
  * @email ly@soloist.top
  * @description
  */
+@CrossOrigin
 @NoNeedAuthorized
 @RestController
 public class PublicController {

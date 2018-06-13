@@ -1,10 +1,7 @@
 package system.attendance.electronic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import system.attendance.electronic.model.Attendance;
 import system.attendance.electronic.model.AttendanceCount;
 import system.attendance.electronic.model.BaseResponseBody;
@@ -19,6 +16,7 @@ import java.util.List;
  * @email ly@soloist.top
  * @description
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/attendances")
 public class AttendanceController extends BaseController {
@@ -49,6 +47,25 @@ public class AttendanceController extends BaseController {
     @RequestMapping(value = "/{year}/{month}", method = RequestMethod.GET)
     public BaseResponseBody getAttendancesByUser(@PathVariable Integer year, @PathVariable Integer month) {
         List<Attendance> userAttendance = attendanceService.getUserAttendance(currentUserId, year, month);
+
+        userAttendance.forEach(attendance -> {
+            attendance.setId(null);
+            attendance.setUserId(null);
+        });
+
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(userAttendance);
+        return responseBody;
+    }
+
+    /**
+     * 获取当月出勤
+     *
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public BaseResponseBody getAttendancesByUser() {
+        List<Attendance> userAttendance = attendanceService.getUserAttendance(currentUserId, null, null);
 
         userAttendance.forEach(attendance -> {
             attendance.setId(null);
