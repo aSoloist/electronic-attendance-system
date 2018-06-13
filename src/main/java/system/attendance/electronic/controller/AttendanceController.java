@@ -116,6 +116,14 @@ public class AttendanceController extends BaseController {
         return responseBody;
     }
 
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public BaseResponseBody attendanceCount() {
+        AttendanceCount attendanceCount = attendanceService.attendanceCount(currentUserId, null, null);
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(attendanceCount);
+        return responseBody;
+    }
+
     /**
      * 统计出勤记录
      *

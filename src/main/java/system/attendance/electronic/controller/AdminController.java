@@ -98,7 +98,7 @@ public class AdminController extends BaseController {
                                               @PathVariable Integer result) {
         Application application = applicationService.updateResult(id, result);
         if (application == null) {
-            throw new ApplicationException("申请不存在", 500);
+            throw new ApplicationException("更新申请失败", 500);
         }
         User user = userService.get(application.getUserId());
         ApplicationAndUser applicationAndUser = new ApplicationAndUser(application);
@@ -109,7 +109,7 @@ public class AdminController extends BaseController {
     }
     
     @RequestMapping(value = "/attendances/{userId}", method = RequestMethod.GET)
-    public BaseResponseBody listAttendance(@PathVariable String userId) {
+    public BaseResponseBody listAttendances(@PathVariable String userId) {
         List<Attendance> userAttendance = attendanceService.getUserAttendance(userId, null, null);
         BaseResponseBody responseBody = new BaseResponseBody();
         responseBody.setData(userAttendance);

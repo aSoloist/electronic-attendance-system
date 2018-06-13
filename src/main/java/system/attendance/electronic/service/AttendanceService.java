@@ -42,7 +42,7 @@ public class AttendanceService implements IService<Attendance, String> {
     public AttendanceCount attendanceCount(String userId, Integer year, Integer month) {
         Calendar calendar = Calendar.getInstance();
         int nowYear = calendar.getWeekYear();
-        int nowMonth = calendar.get(Calendar.MONTH);
+        int nowMonth = calendar.get(Calendar.MONTH) + 1;
         int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
 
         List<Attendance> userAttendance = getUserAttendance(userId, year, month);
@@ -87,9 +87,9 @@ public class AttendanceService implements IService<Attendance, String> {
             if (attendance.getIsWorkday().intValue() == 1) { // 工作日
                 if (attendance.getStatus().intValue() == 0 || attendance.getStatus().intValue() == 4) { // 未出勤
                     check = 0;
-                } else if (attendance.getStatus().intValue() == 1) { // 已签到
+                } else if (attendance.getStatus().intValue() == 1 || attendance.getStatus().intValue() == 6) { // 已签到
                     check = 1;
-                } else if (attendance.getStatus().intValue() == 5) { // 已签退
+                } else if (attendance.getStatus().intValue() == 5 || attendance.getStatus().intValue() == 7) { // 已签退
                     check = 2;
                 }
             } else { // 非工作日
@@ -175,7 +175,7 @@ public class AttendanceService implements IService<Attendance, String> {
         }
 
         attendance.setBeginTime(new Date());
-        attendance.setStatus((byte) 1);
+        attendance.setStatus((byte) (attendance.getStatus().intValue() == 0 ? 1 : 6));
         return update(attendance);
     }
 
@@ -199,12 +199,12 @@ public class AttendanceService implements IService<Attendance, String> {
             throw new AttendanceException("尚未签到", 403);
         } else if (attendance.getStatus().intValue() == 2 || attendance.getStatus().intValue() == 3) { // 不允许签退
             throw new AttendanceException("不允许签退", 403);
-        } else if (attendance.getStatus().intValue() == 5) {
+        } else if (attendance.getStatus().intValue() == 5 || attendance.getStatus().intValue() == 7) {
             throw new AttendanceException("不允许重复签退", 403);
         }
 
         attendance.setEndTime(new Date());
-        attendance.setStatus((byte) 5);
+        attendance.setStatus((byte) (attendance.getStatus().intValue() == 1 ? 5 : 7));
         return update(attendance);
     }
 

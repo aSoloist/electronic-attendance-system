@@ -40,7 +40,10 @@ public class ApplicationService implements IService<Application, String> {
     public Application updateResult(String id, Integer result) {
         Application application = applicationMapper.selectByPrimaryKey(id);
         if (application == null) {
-            return null;
+            throw new ApplicationException("申请不存在", 500);
+        }
+        if (application.getResult().intValue() != 0) {
+            throw new ApplicationException("不能重复审核", 403);
         }
         application.setResult(result.byteValue());
         return applicationMapper.updateByPrimaryKeySelective(application) == 1 ? application : null;

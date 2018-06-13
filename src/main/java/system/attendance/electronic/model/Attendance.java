@@ -17,7 +17,7 @@ public class Attendance implements Serializable {
     private Date endTime;
 
     /**
-     * 0 未出勤 1 出勤 2 请假 3 出差 4 加班 5 签退
+     * 0 未出勤 1 出勤 2 请假 3 出差 4 加班 5 签退 6 加班签到 7 加班签退
      */
     private Byte status;
 
