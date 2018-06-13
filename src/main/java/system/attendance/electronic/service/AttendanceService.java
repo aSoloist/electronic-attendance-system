@@ -128,6 +128,7 @@ public class AttendanceService implements IService<Attendance, String> {
      */
     public List<Attendance> getUserAttendance(String userId, Integer year, Integer month) {
         AttendanceExample attendanceExample = new AttendanceExample();
+        attendanceExample.setOrderByClause("day desc");
         if (year == null && month == null) {
             Calendar calendar = Calendar.getInstance();
             year = calendar.getWeekYear();
