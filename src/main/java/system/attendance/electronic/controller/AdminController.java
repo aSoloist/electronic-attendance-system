@@ -47,6 +47,21 @@ public class AdminController extends BaseController {
         responseBody.setData(all);
         return responseBody;
     }
+    
+    @RequestMapping(value = "/applications", method = RequestMethod.GET)
+    public BaseResponseBody listApplications() {
+        List<Application> applicationMonth = applicationService.getApplicationMonth(null, null, null);
+        List<ApplicationAndUser> applicationAndUserList = new ArrayList<>();
+        applicationMonth.forEach(application -> {
+            ApplicationAndUser applicationAndUser = new ApplicationAndUser(application);
+            User user = userService.get(application.getUserId());
+            applicationAndUser.setUsername(user.getUsername());
+            applicationAndUserList.add(applicationAndUser);
+        });
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(applicationAndUserList);
+        return responseBody;
+    }
 
     /**
      * 所有申请
@@ -61,11 +76,9 @@ public class AdminController extends BaseController {
         List<Application> applicationMonth = applicationService.getApplicationMonth(null, year, month);
         List<ApplicationAndUser> applicationAndUserList = new ArrayList<>();
         applicationMonth.forEach(application -> {
-            ApplicationAndUser applicationAndUser = new ApplicationAndUser();
+            ApplicationAndUser applicationAndUser = new ApplicationAndUser(application);
             User user = userService.get(application.getUserId());
-            user.setPassword(null);
-            applicationAndUser.setApplication(application);
-            applicationAndUser.setUser(user);
+            applicationAndUser.setUsername(user.getUsername());
             applicationAndUserList.add(applicationAndUser);
         });
         BaseResponseBody responseBody = new BaseResponseBody();
@@ -88,10 +101,8 @@ public class AdminController extends BaseController {
             throw new ApplicationException("申请不存在", 500);
         }
         User user = userService.get(application.getUserId());
-        ApplicationAndUser applicationAndUser = new ApplicationAndUser();
-        applicationAndUser.setUser(user);
-        user.setPassword(null);
-        applicationAndUser.setApplication(application);
+        ApplicationAndUser applicationAndUser = new ApplicationAndUser(application);
+        applicationAndUser.setUsername(user.getUsername());
         BaseResponseBody responseBody = new BaseResponseBody();
         responseBody.setData(applicationAndUser);
         return responseBody;
