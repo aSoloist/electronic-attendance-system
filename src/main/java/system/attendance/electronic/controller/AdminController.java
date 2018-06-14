@@ -1,9 +1,13 @@
 package system.attendance.electronic.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import system.attendance.electronic.annotation.NeedAdmin;
+import system.attendance.electronic.common.SnowFlakeUtil;
 import system.attendance.electronic.exception.ApplicationException;
+import system.attendance.electronic.exception.UserException;
 import system.attendance.electronic.model.*;
 import system.attendance.electronic.service.ApplicationService;
 import system.attendance.electronic.service.AttendanceService;
@@ -33,6 +37,50 @@ public class AdminController extends BaseController {
 
     @Autowired
     private AttendanceService attendanceService;
+
+    /**
+     * 检查用户名
+     *
+     * @param username
+     * @return
+     */
+    @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
+    public BaseResponseBody checkUsername(@PathVariable String username) {
+        Boolean checkUsername = userService.checkUsername(username);
+        BaseResponseBody responseBody = new BaseResponseBody();
+        responseBody.setData(checkUsername);
+        return responseBody;
+    }
+
+    /**
+     * 添加用户
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    public BaseResponseBody register(@RequestBody User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+        BaseResponseBody baseResponseBody = new BaseResponseBody();
+        if (!(StringUtils.isEmptyOrWhitespaceOnly(username) &&
+                StringUtils.isEmptyOrWhitespaceOnly(password))) {
+            User isExist = userService.getUserByUsername(username);
+            if (isExist == null) {
+                user.setId(SnowFlakeUtil.get());
+                user.setRoot((byte) 0);
+                userService.save(user);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("root", user.getRoot());
+                baseResponseBody.setData(jsonObject);
+            } else {
+                throw new UserException("用户已存在", 500);
+            }
+        } else {
+            throw new UserException("无效的用户名或密码", 500);
+        }
+        return baseResponseBody;
+    }
 
     /**
      * 所有用户
